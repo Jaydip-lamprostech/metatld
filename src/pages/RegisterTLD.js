@@ -50,7 +50,7 @@ function RegisterTLD() {
         </div>
 
         <div className="regtld-config-heading">
-          <h4>Configuration</h4>
+          <span>Configuration</span>
         </div>
         <div className="input-group-flex">
           <div className="input-group ">
@@ -107,7 +107,7 @@ function RegisterTLD() {
           </div>
         </div>
         <div className="regtld-config-heading">
-          <h4>Letter & Price Configuration</h4>
+          <span>Letter & Price Configuration</span>
         </div>
         <div className="letter-price-config-parent">
           {letterConfigurations.map((config, index) => (
