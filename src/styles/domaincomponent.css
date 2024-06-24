@@ -1,0 +1,136 @@
+.domaincomponent {
+    width: 100%;
+    padding: 50px 150px;
+    box-sizing: border-box;
+    font-family: "Space Grotesk", sans-serif;
+  
+  }
+  
+  .domain-search-container {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+  }
+  
+  .domain-search-container input {
+    background: linear-gradient(90deg, #1b3139 0%, #34383b 100%);
+    border: 1px solid #72eeff;
+    padding: 20px 25px;
+    border-radius: 40px;
+    width: 40%;
+    color: white;
+    font-size: 17px;
+  }
+  
+  .domain-search-container input::placeholder {
+    color: #fff;
+    opacity: 0.8;
+    font-family: "Space Grotesk", sans-serif;
+  }
+  
+  .domain-search-container button {
+    background: linear-gradient(180deg, #b4e8ff 0%, #2ac3dc 100%);
+    border: none;
+    outline: none;
+    border-radius: 100%;
+    padding: 15px 15px;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  
+  .error-message{
+    padding: 10px;
+    color: red;
+    letter-spacing: 1px;
+  }
+
+  .heading{
+    padding: 20px 30px;
+    color: white;
+    letter-spacing: 1px;
+    font-size: 16px;
+    font-weight: 100;
+  }
+
+  .domain-result{
+    overflow-y: scroll;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0px;
+  }
+
+  .domain-item{
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(33, 189, 223, 0.1) 92.72%
+    );
+    padding: 15px 35px;
+    border-radius: 20px;
+    font-size: 18px;
+  }
+
+  .left, .right{
+    display: flex;
+    align-items: center;
+    gap: 50px;
+  }
+
+  .domain-name{
+    width: 100px;
+    color: #B4E8FF;
+    font-weight: 700;
+  }
+
+  .status{
+    color: #FFFDCA;
+    background-color: #143443;
+    padding: 5px 18px;
+    width: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 12px;
+  }
+
+  .price{
+    width: 100px;
+    color: white;
+  }
+  
+  .buy-button{
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 8px 30px;
+    background: linear-gradient(90deg, #B4E8FF 0%, #72EEFF 100%);
+    color: black;
+    border-radius: 25px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    cursor: pointer;
+  }
+  
+  .buy-button:disabled {
+    background: linear-gradient(90deg, rgba(180, 232, 255, 0.26) 0%, rgba(114, 238, 255, 0.26) 100%);
+    color: #B4E8FFA8;
+    cursor: not-allowed;
+  }
+
+
+
+  
