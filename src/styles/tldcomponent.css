@@ -1,0 +1,95 @@
+.tldcomponent {
+  width: 100%;
+  padding: 50px 150px;
+  box-sizing: border-box;
+  font-family: "Space Grotesk", sans-serif;
+
+}
+
+.search-container {
+  display: flex;
+  gap: 25px;
+  align-items: center;
+}
+
+.search-container input {
+  background: linear-gradient(90deg, #1b3139 0%, #34383b 100%);
+  border: 1px solid #72eeff;
+  padding: 20px 25px;
+  border-radius: 13px;
+  width: 40%;
+  color: white;
+  font-size: 17px;
+}
+
+.search-container input::placeholder {
+  color: #fff;
+  opacity: 0.8;
+}
+
+.search-container button {
+  background: linear-gradient(180deg, #b4e8ff 0%, #2ac3dc 100%);
+  border: none;
+  outline: none;
+  border-radius: 100%;
+  padding: 15px 15px;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.error-message{
+  padding: 10px;
+  color: red;
+  letter-spacing: normal1px;
+}
+
+.result {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(33, 189, 223, 0.1) 92.72%
+  );
+  padding: 20px 35px;
+  border-radius: 20px;
+  margin: 80px 0px 10px;
+  font-size: 18px;
+}
+
+.availability{
+  display: flex;
+  align-items: center;
+  gap: 80px;
+  color: white;
+  font-weight: 700;
+}
+
+.tldname{
+  color: #B4E8FF;
+  font-weight: 700;
+}
+
+.availability button{
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 10px 30px;
+  background: linear-gradient(90deg, #B4E8FF 0%, #72EEFF 100%);
+  color: black;
+  border-radius: 25px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.availability button:disabled {
+  background: linear-gradient(90deg, rgba(180, 232, 255, 0.26) 0%, rgba(114, 238, 255, 0.26) 100%);
+  color: #B4E8FFA8;
+  cursor: not-allowed;
+}

@@ -1,0 +1,70 @@
+.mainSearchPage {
+  width: 100%;
+  margin: 40px auto;
+  box-sizing: border-box;
+}
+
+.navigation {
+  width: 100%;
+  background: #0a1621c4;
+  padding: 0px 150px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+.line{
+  width: 0.2px;
+  border-left: 0.1px solid white;
+  height: 24px;
+}
+
+.navigation button {
+  background: transparent;
+  outline: none;
+  border: none;
+  color: white;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  cursor: pointer;
+  padding: 20px;
+}
+
+.navigation .active {
+  border-bottom: 2px solid;
+  border-image-source: linear-gradient(90deg, #0A1621 0%, #76DDFA 56%, #0A1621 100%);
+  border-image-slice: 1;
+  color: #B4E8FF;
+}
+
+
+
+@media screen and (max-width: 994px) {
+  .navigation {
+    padding: 0px 100px;
+  }
+}
+
+
+
+
+@media screen and (max-width: 768px) {
+  .navigation {
+    padding: 0px 60px;
+  }
+}
+
+@media screen and (max-width:450px) {
+  .navigation{
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .navigation button {
+    font-size: 12px;
+    font-weight: 400;
+    padding: 15px;
+  }
+}

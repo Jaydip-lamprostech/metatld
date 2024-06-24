@@ -1,0 +1,5 @@
+.mainlayout{
+    height: 100vh !important;
+    margin: 0;
+    background: linear-gradient(180deg, #0A1621 0%, #0B4862 100%);
+}

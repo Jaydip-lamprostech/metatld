@@ -2,15 +2,14 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import Header from "../common/Header";
 import Footer from "../common/Footer";
+import '../styles/mainlayout.css'
 
 function MainLayout() {
   return (
-    <div>
+    <div className="mainlayout">
       <Header />
-      <main>
-        <Outlet />
-      </main>
-      <Footer />
+      <Outlet />
+      {/* <Footer />  */}
     </div>
   );
 }
