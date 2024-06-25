@@ -212,15 +212,15 @@ function RegisterDomain() {
                   </g>
                 </svg>
               </span>
-              {/* <Tooltip
+              <Tooltip
                 id="registration-period"
                 removeStyle
                 style={{
                   maxWidth: "200px",
                   wordBreak: "break-word",
-                  fontFamily: "IBM Plex Sans, sans-serif",
+                  fontFamily: "Space Grotesk, sans-serif",
                 }}
-              /> */}
+              />
             </div>
             <div className="registartion_field_input registration_period">
               <span className="registration_period_time">
@@ -321,7 +321,7 @@ function RegisterDomain() {
                 style={{
                   maxWidth: "200px",
                   wordBreak: "break-word",
-                  fontFamily: "Inter, sans-serif",
+                  fontFamily: "Space Grotesk, sans-serif",
                 }}
               />
             </div>
@@ -333,17 +333,18 @@ function RegisterDomain() {
             <p
               style={{
                 color: "#ffffff80",
-                fontSize: "1.2rem",
+                fontSize: "1rem",
                 margin: "10px",
+                fontFamily: "Space Grotesk, sans-serif",
               }}
             >
               {"Approx. : $ " + domainPriceInUSD + " USD"}
             </p>
           </div>
         </div>
-        <div className="stake-register">
+        <div className="domain-register">
           <button type="submit" className="submit-button">
-            Stake and Register
+            Domain Register
           </button>
         </div>
       </form>
