@@ -4,11 +4,15 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "react-tooltip/dist/react-tooltip.css";
+import "@coinbase/onchainkit/styles.css";
+import OnchainProviders from "./OnchainProviders";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <OnchainProviders>
+      <App />
+    </OnchainProviders>
   </React.StrictMode>
 );
 

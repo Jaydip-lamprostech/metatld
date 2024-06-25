@@ -5,9 +5,10 @@ import { Tooltip } from "react-tooltip";
 import { toBigInt } from "web3-utils";
 import { ethers } from "ethers";
 import axios from "axios";
+import { useChainId } from "wagmi";
 
 function RegisterDomain() {
-  const { chain } = useNetwork();
+  const chainId = useChainId();
   const [searchParams] = useSearchParams();
   const searchDomain = searchParams.get("query");
   console.log(searchDomain);
@@ -40,18 +41,18 @@ function RegisterDomain() {
       setfetchingValue("fetching...");
 
       const rpcUrl =
-        chain.id === 919
+        chainId === 919
           ? "https://sepolia.mode.network/"
-          : chain.id === 34443
+          : chainId === 34443
           ? "https://mainnet.mode.network"
           : null;
 
       const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
 
       const contractAddress =
-        chain.id === 919
+        chainId === 919
           ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID
-          : chain.id === 34443
+          : chainId === 34443
           ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_SPACEID
           : null;
 
@@ -64,9 +65,9 @@ function RegisterDomain() {
       // console.log(props.registrationPeriod);
       // const price = await con.getRegistrationPrice(name);
       const identifier =
-        chain.id === 919
+        chainId === 919
           ? toBigInt(process.env.REACT_APP_IDENTIFIER)
-          : chain.id === 34443
+          : chainId === 34443
           ? toBigInt(process.env.REACT_APP_MAINNET_IDENTIFIER)
           : null;
 
