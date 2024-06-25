@@ -27,6 +27,23 @@
   box-shadow: 0px 1px 10px 0px #fff;
 }
 
+.component {
+  height: 2rem; /* equivalent to h-8 in Tailwind CSS */
+  width: 2rem; /* equivalent to w-8 in Tailwind CSS */
+}
+
+.yellow-fill {
+  fill: yellow;
+  stroke: yellow;
+  stroke-width: 1;
+}
+
+.green-fill {
+  fill: green;
+  stroke: green;
+  stroke-width: 1;
+}
+
 @media screen and (max-width: 994px) {
   .commonheader {
     padding: 50px 100px;
