@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import "../styles/RegisterDomain.css";
+import { Tooltip } from "react-tooltip";
+import { toBigInt } from "web3-utils";
+import { ethers } from "ethers";
+import axios from "axios";
 
 function RegisterDomain() {
+  const { chain } = useNetwork();
   const [searchParams] = useSearchParams();
   const searchDomain = searchParams.get("query");
   console.log(searchDomain);
@@ -11,9 +16,16 @@ function RegisterDomain() {
   const [showTLDName, setTLDName] = useState(
     tldName ? tldName.toLowerCase() : ""
   );
+  const [ethPrice, setEthPrice] = useState(null);
+  const [fetchingValue, setfetchingValue] = useState(false);
+  const [domainPricewithRegistrationTime, setDomainPricewithRegistrationTime] =
+    useState(0);
+
   const [showDomainName, setDomainName] = useState(
     searchDomain ? searchDomain.toLowerCase() : ""
   );
+
+  const [domainNamePrice, setdomainNamePrice] = useState(1);
   const [registrationPeriod, setRegistrationPeriod] = useState(1);
   const handlePeriodDecrease = () => {
     if (registrationPeriod !== 1) setRegistrationPeriod((prev) => prev - 1);
@@ -22,9 +34,126 @@ function RegisterDomain() {
   const handlePeriodIncrease = () => {
     setRegistrationPeriod((prev) => prev + 1);
   };
+
+  const domainPriceCheck = async (name) => {
+    try {
+      setfetchingValue("fetching...");
+
+      const rpcUrl =
+        chain.id === 919
+          ? "https://sepolia.mode.network/"
+          : chain.id === 34443
+          ? "https://mainnet.mode.network"
+          : null;
+
+      const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
+
+      const contractAddress =
+        chain.id === 919
+          ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID
+          : chain.id === 34443
+          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_SPACEID
+          : null;
+
+      const con = new ethers.Contract(
+        contractAddress,
+        // registrarController_abi.abi,
+        provider
+      );
+      const registrationDuration = 31556952 * registrationPeriod;
+      // console.log(props.registrationPeriod);
+      // const price = await con.getRegistrationPrice(name);
+      const identifier =
+        chain.id === 919
+          ? toBigInt(process.env.REACT_APP_IDENTIFIER)
+          : chain.id === 34443
+          ? toBigInt(process.env.REACT_APP_MAINNET_IDENTIFIER)
+          : null;
+
+      const estimatedPriceArray = await con.rentPrice(
+        identifier,
+        name, // Replace with a label for your domain
+        registrationDuration
+      );
+      // Access individual BigNumber objects in the array
+      const base = parseInt(estimatedPriceArray[0]);
+      const premium = parseInt(estimatedPriceArray[1]);
+      const price = base + parseInt(premium);
+
+      // console.log(ethers.utils.formatEther(price));
+      let x = price / 10 ** 18;
+      let priceshort = parseFloat(x.toFixed(7));
+      setDomainPricewithRegistrationTime(priceshort + " ETH");
+      setfetchingValue(false);
+      // props.setRegisterdomainPriceInWei(price);
+      // const eth = ;
+      // props.setFilteredUsers(details);
+    } catch (error) {
+      console.log("Error:", error);
+      setfetchingValue("error");
+      // Handle other errors
+    }
+  };
+
+  useEffect(() => {
+    const checking = async () => {
+      await domainPriceCheck(showDomainName);
+    };
+    if (showDomainName) {
+      checking();
+    }
+  }, [registrationPeriod]);
+
+  // useEffect to fetch data from the CoinGecko API
+  useEffect(() => {
+    // Function to fetch ETH price
+    const fetchEthPrice = async () => {
+      try {
+        // Make a GET request to the CoinGecko API
+        const response = await axios.get(
+          "https://api.coingecko.com/api/v3/simple/price",
+          {
+            params: {
+              ids: "ethereum",
+              vs_currencies: "usd",
+            },
+          }
+        );
+
+        // Extract the ETH price from the response
+        const price = response.data.ethereum.usd;
+
+        // Set the ETH price in the component state
+        setEthPrice(price);
+      } catch (error) {
+        console.error("Error fetching ETH price:", error);
+      }
+    };
+
+    // Call the fetchEthPrice function
+    fetchEthPrice();
+    // Fetch data every 5 minutes (adjust as needed)
+    const intervalId = setInterval(fetchEthPrice, 200000);
+
+    // Cleanup function to clear the interval when the component unmounts
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const calculateValueInUSD = (ethAmount) => {
+    return (parseFloat(ethAmount) * ethPrice).toFixed(4);
+  };
+  const domainPriceInETH = domainPricewithRegistrationTime
+    ? domainPricewithRegistrationTime
+    : domainNamePrice + " ETH";
+  const domainPriceInUSD = calculateValueInUSD(
+    domainPricewithRegistrationTime
+      ? domainPricewithRegistrationTime
+      : domainNamePrice
+  );
+
   return (
     <div className="container">
-      <h1 className="regtld-h1">Create Your Own TLD</h1>
+      <h1 className="regtld-h1">Domain Registration</h1>
       <form className="regtld-form">
         <div className="input-group mb-40">
           <label>Domain Name</label>
@@ -146,6 +275,69 @@ function RegisterDomain() {
                     /> */}
               </div>
             </div>
+          </div>
+
+          <div className="registration_field_item">
+            <div className="registration_field_title">
+              <span className="field_title">
+                {"Domain Cost "}
+                <span className="field-sub-title">(Excluding Gas Fees)</span>
+              </span>
+              <span
+                className="field_info"
+                data-tooltip-id="domain-cost"
+                data-tooltip-content="The cost is for the period selected."
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  enableBackground="new 0 0 24 24"
+                  height="24px"
+                  viewBox="0 0 24 24"
+                  width="24px"
+                  fill="#000000"
+                >
+                  <g>
+                    <path d="M0,0h24v24H0V0z" fill="none" />
+                  </g>
+                  <g>
+                    <g>
+                      <g>
+                        <path d="M12,22c1.1,0,2-0.9,2-2h-4C10,21.1,10.9,22,12,22z" />
+                      </g>
+                      <g>
+                        <path d="M9,19h6c0.55,0,1-0.45,1-1v0c0-0.55-0.45-1-1-1H9c-0.55,0-1,0.45-1,1v0C8,18.55,8.45,19,9,19z" />
+                      </g>
+                      <g>
+                        <path d="M12,2C7.86,2,4.5,5.36,4.5,9.5c0,3.82,2.66,5.86,3.77,6.5h7.46c1.11-0.64,3.77-2.68,3.77-6.5C19.5,5.36,16.14,2,12,2z" />
+                      </g>
+                    </g>
+                  </g>
+                </svg>
+              </span>
+              <Tooltip
+                id="domain-cost"
+                removeStyle
+                style={{
+                  maxWidth: "200px",
+                  wordBreak: "break-word",
+                  fontFamily: "Inter, sans-serif",
+                }}
+              />
+            </div>
+            <div className="registartion_field_input">
+              <span className="registration_domain_cost">
+                {fetchingValue ? fetchingValue : <>{domainPriceInETH + " "}</>}
+              </span>
+            </div>
+            <p
+              style={{
+                color: "#ffffff80",
+                fontSize: "1.2rem",
+                margin: "10px",
+              }}
+            >
+              {"Approx. : $ " + domainPriceInUSD + " USD"}
+            </p>
           </div>
         </div>
         <div className="stake-register">
