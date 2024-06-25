@@ -7,6 +7,7 @@
   width: 80%;
   max-width: 1000px;
   margin: 80px auto;
+  margin-top: 20px;
   min-height: 100vh;
   /* border: 1px solid red; */
   background: linear-gradient(180deg, #143443 0%, #001b25 100%);
@@ -35,6 +36,7 @@
   text-align: left;
   color: #fffdca;
   margin-top: 40px;
+  margin-bottom: 20px;
 }
 .regtld-form {
   padding: 20px;
