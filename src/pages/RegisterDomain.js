@@ -41,10 +41,10 @@ function RegisterDomain() {
       setfetchingValue("fetching...");
 
       const rpcUrl =
-        chainId === 919
-          ? "https://sepolia.mode.network/"
-          : chainId === 34443
-          ? "https://mainnet.mode.network"
+        chainId === 84532
+          ? "https://api.developer.coinbase.com/rpc/v1/base-sepolia/IdQtWiaR8wUAT5Da8g2RxA6gTL6dkz40"
+          : chainId === 8453
+          ? "https://api.developer.coinbase.com/rpc/v1/base/IdQtWiaR8wUAT5Da8g2RxA6gTL6dkz40"
           : null;
 
       const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
@@ -96,14 +96,14 @@ function RegisterDomain() {
     }
   };
 
-  useEffect(() => {
-    const checking = async () => {
-      await domainPriceCheck(showDomainName);
-    };
-    if (showDomainName) {
-      checking();
-    }
-  }, [registrationPeriod]);
+  // useEffect(() => {
+  //   const checking = async () => {
+  //     await domainPriceCheck(showDomainName);
+  //   };
+  //   if (showDomainName) {
+  //     checking();
+  //   }
+  // }, [registrationPeriod]);
 
   // useEffect to fetch data from the CoinGecko API
   useEffect(() => {
