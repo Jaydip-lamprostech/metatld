@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import "../styles/nameservice.css";
+import { Table } from 'antd';
+import 'antd/dist/reset.css';
 import { MdArrowDropDown, MdArrowDropUp, MdVerified } from "react-icons/md";
-
 
 const nameServiceData = [
   {
     id: 1,
     src: "https://meta.image.space.id/mkt-logo/eth-tld-logo-colored.jpg",
     name: "ENS: Ethereum Name Service",
-    tld: ".eth",
+    tld: ".etd",
     by: "By ens",
     volume: "0.72203",
     usd: "$2,471.19",
@@ -136,108 +137,202 @@ const nameServiceData = [
   },
 ];
 
-function NameServices() {
-  const [data, setData] = useState(nameServiceData);
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
+const NameServices = () => {
+  const columns = [
+    {
+      title: '#',
+      dataIndex: 'index',
+      key: 'index',
+      render: (text, record, index) => index + 1,
+    },
+    {
+      title: 'Name Service',
+      dataIndex: 'name',
+      key: 'name',
+      sorter: (a, b) => a.name.localeCompare(b.name),
+      render: (text, record) => (
+        <div className="column2">
+          <img src={record.src} alt={record.name} className="service-img" />
+          <div>
+            <p className="name">
+              {record.name} (
+              <span style={{ color: record.color }}>{record.tld}</span>
+              ){' '}
+              <span style={{ color: 'white', marginLeft: '10px', marginTop: '4px' }}>
+                <MdVerified />
+              </span>
+            </p>
+            <p className="by">
+              {record.by}
+              <span style={{ color: record.color }}>{record.tld}</span>
+            </p>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: 'Volume',
+      dataIndex: 'volume',
+      key: 'volume',
+      sorter: (a, b) => parseFloat(a.volume) - parseFloat(b.volume),
+    },
+    {
+      title: 'Domain Registered',
+      dataIndex: 'domainsRegistered',
+      key: 'domainsRegistered',
+      sorter: (a, b) => a.domainsRegistered - b.domainsRegistered,
+    },
+    {
+      title: 'Total Registered',
+      dataIndex: 'totalRegistered',
+      key: 'totalRegistered',
+      sorter: (a, b) => a.totalRegistered - b.totalRegistered,
+    },
+    {
+      title: 'Unique Holders',
+      dataIndex: 'uniqueHolders',
+      key: 'uniqueHolders',
+      sorter: (a, b) => a.uniqueHolders - b.uniqueHolders,
+    },
+  ];
 
-  const sortData = (key) => {
-    let sortedData = [...data];
-    if (sortConfig?.key === key && sortConfig.direction === "ascending") {
-      sortedData.reverse();
-      setSortConfig({ key, direction: "descending" });
-    } else {
-      sortedData.sort((a, b) => {
-        if (a[key] < b[key]) return -1;
-        if (a[key] > b[key]) return 1;
-        return 0;
-      });
-      setSortConfig({ key, direction: "ascending" });
-    }
-    setData(sortedData);
-  };
-
-  const renderSortArrow = (key) => {
-    const isActive = sortConfig.key === key;
-    const isAscending = sortConfig.direction === "ascending";
-
-    return (
-      <div className="arrow">
-        <MdArrowDropUp style={{ marginBottom: "-5px",color: isActive && isAscending ? "#fff" : "#888" }} />
-        <MdArrowDropDown style={{ color: isActive && !isAscending ? "#fff" : "#888" }} />
-      </div>
-    );
-  };
-
+  const dataWithKeys = nameServiceData.map((item, index) => ({
+    ...item,
+    key: index,
+  }));
 
   return (
     <div className="nameservice">
       <h3 className="nameservice-header">Name Service</h3>
-      <div className="tablediv">
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-
-            <th onClick={() => sortData("name")}>
-              <div>
-              <p>Name Service</p>
-              {renderSortArrow("name")}
-              </div>
-            </th>
-
-            <th onClick={() => sortData("volume")}>
-              <div>
-                <p>Volume</p> 
-                {renderSortArrow("volume")}
-              </div>
-            </th>
-
-            <th onClick={() => sortData("domainsRegistered")}>
-              <div>
-              <p>Domain Registered</p> 
-              {renderSortArrow("domainsRegistered")}
-              </div>
-            </th>
-
-            <th onClick={() => sortData("totalRegistered")}>
-              <div>
-              <p>Total Registered </p>{renderSortArrow("totalRegistered")}
-              </div>
-            </th>
-
-            <th onClick={() => sortData("uniqueHolders")}>
-              <div>
-              <p>Unique Holders</p>
-              {renderSortArrow("uniqueHolders")}
-              </div>
-              </th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {data.map((item, index) => (
-            <tr key={item.id}>
-              <td>{index + 1}</td>
-              <td>
-                <div className="column2">
-                  <img src={item.src} alt={item.name} className="service-img" />
-                  <div>
-                    <p className="name">{item.name} (<span style={{ color: item.color }}>{item.tld}</span>) <span style={{ color: "white", marginLeft: "10px", marginTop: "4px" }}><MdVerified /></span></p>
-                    <p className="by">{item.by}<span style={{ color: item.color }}>{item.tld}</span></p>
-                  </div>
-                </div>
-              </td>
-              <td>{item.volume}</td>
-              <td>{item.domainsRegistered}</td>
-              <td>{item.totalRegistered}</td>
-              <td>{item.uniqueHolders}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      </div>
+      <Table columns={columns} dataSource={dataWithKeys} pagination={false} />
     </div>
   );
-}
+};
+
+
+// function NameServices() {
+//   const [data, setData] = useState(nameServiceData);
+//   const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
+
+//   const sortData = (key) => {
+//     let sortedData = [...data];
+//     if (sortConfig?.key === key && sortConfig.direction === "ascending") {
+//       sortedData.reverse();
+//       setSortConfig({ key, direction: "descending" });
+//     } else {
+//       sortedData.sort((a, b) => {
+//         if (a[key] < b[key]) return -1;
+//         if (a[key] > b[key]) return 1;
+//         return 0;
+//       });
+//       setSortConfig({ key, direction: "ascending" });
+//     }
+//     setData(sortedData);
+//   };
+
+//   const renderSortArrow = (key) => {
+//     const isActive = sortConfig.key === key;
+//     const isAscending = sortConfig.direction === "ascending";
+
+//     return (
+//       <div className="arrow">
+//         <MdArrowDropUp
+//           style={{
+//             marginBottom: "-5px",
+//             color: isActive && isAscending ? "#fff" : "#888",
+//           }}
+//         />
+//         <MdArrowDropDown
+//           style={{ color: isActive && !isAscending ? "#fff" : "#888" }}
+//         />
+//       </div>
+//     );
+//   };
+
+//   return (
+//     <div className="nameservice">
+//       <h3 className="nameservice-header">Name Service</h3>
+//       {/* <div className="tablediv">
+//         <table className="table1">
+//           <tr>
+//             <td className="c1">#</td>
+
+//             <td className="c2" onClick={() => sortData("name")}>
+//               <div>
+//                 <p>Name Service</p>
+//                 {renderSortArrow("name")}
+//               </div>
+//             </td>
+
+//             <td className="c3" onClick={() => sortData("volume")}>
+//               <div>
+//                 <p>Volume</p>
+//                 {renderSortArrow("volume")}
+//               </div>
+//             </td>
+
+//             <td className="c4" onClick={() => sortData("domainsRegistered")}>
+//               <div>
+//                 <p>Domain Registered</p>
+//                 {renderSortArrow("domainsRegistered")}
+//               </div>
+//             </td>
+
+//             <td className="c5" onClick={() => sortData("totalRegistered")}>
+//               <div>
+//                 <p>Total Registered </p>
+//                 {renderSortArrow("totalRegistered")}
+//               </div>
+//             </td>
+
+//             <td className="c6" onClick={() => sortData("uniqueHolders")}>
+//               <div>
+//                 <p>Unique Holders</p>
+//                 {renderSortArrow("uniqueHolders")}
+//               </div>
+//             </td>
+//           </tr>
+//         </table>
+//       </div>
+//       <div className="scrolltablediv">
+//         <table className="table2">
+//           {data.map((item, index) => (
+//             <tr key={item.id}>
+//               <td className="c1">{index + 1}</td>
+//               <td className="c2">
+//                 <div className="column2">
+//                   <img src={item.src} alt={item.name} className="service-img" />
+//                   <div>
+//                     <p className="name">
+//                       {item.name} (
+//                       <span style={{ color: item.color }}>{item.tld}</span>){" "}
+//                       <span
+//                         style={{
+//                           color: "white",
+//                           marginLeft: "10px",
+//                           marginTop: "4px",
+//                         }}
+//                       >
+//                         <MdVerified />
+//                       </span>
+//                     </p>
+//                     <p className="by">
+//                       {item.by}
+//                       <span style={{ color: item.color }}>{item.tld}</span>
+//                     </p>
+//                   </div>
+//                 </div>
+//               </td>
+//               <td className="c3">{item.volume}</td>
+//               <td className="c4">{item.domainsRegistered}</td>
+//               <td className="c5">{item.totalRegistered}</td>
+//               <td className="c6">{item.uniqueHolders}</td>
+//             </tr>
+//           ))}
+//         </table>
+//       </div> */}
+//     </div>
+//   );
+// }
 
 export default NameServices;
