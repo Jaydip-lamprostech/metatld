@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/commonheader.css";
 import { ConnectAccount } from "@coinbase/onchainkit/wallet";
-import { useAccount, useDisconnect } from "wagmi";
+import { useAccount, useConnect, useDisconnect } from "wagmi";
 import {
   Address,
   Avatar,
@@ -9,22 +9,33 @@ import {
   Identity,
   Name,
 } from "@coinbase/onchainkit/identity";
+import { getChains } from "@wagmi/core";
+import { coinbaseWallet } from "wagmi/connectors";
+import { wagmiConfig } from "../wagmi";
+import AccountConnect from "./AccountConnect";
 
 function Header() {
   const { address } = useAccount();
   const { disconnect } = useDisconnect();
+  const { connect } = useConnect();
+
+  const chains = getChains(wagmiConfig);
+  console.log(chains);
   return (
     <header className="commonheader">
       <div className="commonlogo">LOGO</div>
       {/* <button className="connect-button">Connect</button> */}
-      <ConnectAccount />
-      {address ? (
+      {/* <ConnectAccount /> */}
+      <div>
+        <AccountConnect />
+      </div>
+      {/* {address ? (
         <>
           <Avatar
             address={address}
             schemaId={address}
             loadingComponent={
-              <div class="component loading-component">
+              <div className="component loading-component">
                 <svg
                   width="100%"
                   height="100%"
@@ -33,13 +44,13 @@ function Header() {
                 >
                   <polygon
                     points="6,1 14,1 19,6 19,14 14,19 6,19 1,14 1,6"
-                    class="yellow-fill"
+                    className="yellow-fill"
                   />
                 </svg>
               </div>
             }
             defaultComponent={
-              <div class="component default-component">
+              <div className="component default-component">
                 <svg
                   width="100%"
                   height="100%"
@@ -48,17 +59,22 @@ function Header() {
                 >
                   <polygon
                     points="6,1 14,1 19,6 19,14 14,19 6,19 1,14 1,6"
-                    class="green-fill"
+                    className="green-fill"
                   />
                 </svg>
               </div>
             }
           />
-          <Name address={address} schemaId={address} />
-          <Address address={address} schemaId={address} />
+          <Name address={address} schemaid={address} />
         </>
       ) : null}
-      <button onClick={disconnect}>Disconnect</button>
+      {address ? (
+        <button onClick={disconnect}>Disconnect</button>
+      ) : (
+        <button onClick={() => connect({ connector: coinbaseWallet() })}>
+          Connect
+        </button>
+      )} */}
     </header>
   );
 }

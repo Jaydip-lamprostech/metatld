@@ -109,3 +109,13 @@
   opacity: 0.3;
   pointer-events: none;
 }
+
+.domain-register {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.submit-button {
+  margin-top: 10px;
+}

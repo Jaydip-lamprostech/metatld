@@ -41,10 +41,10 @@ function RegisterDomain() {
       setfetchingValue("fetching...");
 
       const rpcUrl =
-        chainId === 919
-          ? "https://sepolia.mode.network/"
-          : chainId === 34443
-          ? "https://mainnet.mode.network"
+        chainId === 84532
+          ? "https://api.developer.coinbase.com/rpc/v1/base-sepolia/IdQtWiaR8wUAT5Da8g2RxA6gTL6dkz40"
+          : chainId === 8453
+          ? "https://api.developer.coinbase.com/rpc/v1/base/IdQtWiaR8wUAT5Da8g2RxA6gTL6dkz40"
           : null;
 
       const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
@@ -96,14 +96,14 @@ function RegisterDomain() {
     }
   };
 
-  useEffect(() => {
-    const checking = async () => {
-      await domainPriceCheck(showDomainName);
-    };
-    if (showDomainName) {
-      checking();
-    }
-  }, [registrationPeriod]);
+  // useEffect(() => {
+  //   const checking = async () => {
+  //     await domainPriceCheck(showDomainName);
+  //   };
+  //   if (showDomainName) {
+  //     checking();
+  //   }
+  // }, [registrationPeriod]);
 
   // useEffect to fetch data from the CoinGecko API
   useEffect(() => {
@@ -212,15 +212,15 @@ function RegisterDomain() {
                   </g>
                 </svg>
               </span>
-              {/* <Tooltip
+              <Tooltip
                 id="registration-period"
                 removeStyle
                 style={{
                   maxWidth: "200px",
                   wordBreak: "break-word",
-                  fontFamily: "IBM Plex Sans, sans-serif",
+                  fontFamily: "Space Grotesk, sans-serif",
                 }}
-              /> */}
+              />
             </div>
             <div className="registartion_field_input registration_period">
               <span className="registration_period_time">
@@ -321,7 +321,7 @@ function RegisterDomain() {
                 style={{
                   maxWidth: "200px",
                   wordBreak: "break-word",
-                  fontFamily: "Inter, sans-serif",
+                  fontFamily: "Space Grotesk, sans-serif",
                 }}
               />
             </div>
@@ -333,17 +333,18 @@ function RegisterDomain() {
             <p
               style={{
                 color: "#ffffff80",
-                fontSize: "1.2rem",
+                fontSize: "1rem",
                 margin: "10px",
+                fontFamily: "Space Grotesk, sans-serif",
               }}
             >
               {"Approx. : $ " + domainPriceInUSD + " USD"}
             </p>
           </div>
         </div>
-        <div className="stake-register">
+        <div className="domain-register">
           <button type="submit" className="submit-button">
-            Stake and Register
+            Domain Register
           </button>
         </div>
       </form>

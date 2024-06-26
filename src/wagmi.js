@@ -1,19 +1,20 @@
 import { http, createConfig } from "wagmi";
-import { baseSepolia } from "wagmi/chains";
+import { base, baseSepolia } from "wagmi/chains";
 import { coinbaseWallet } from "wagmi/connectors";
 
 export const wagmiConfig = createConfig({
-  chains: [baseSepolia],
+  chains: [baseSepolia, base],
   multiInjectedProviderDiscovery: false,
   connectors: [
     coinbaseWallet({
       appName: "MetaTLDs",
-      preference: "all",
+      preference: "all", // all, smartWalletOnly, eoaOnly
       version: "4",
     }),
   ],
   ssr: false,
   transports: {
-    [baseSepolia.id]: http(),
+    [baseSepolia.id]: http("https://sepolia.base.org"),
+    [base.id]: http("https://mainnet.base.org"),
   },
 });

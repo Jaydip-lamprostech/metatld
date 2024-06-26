@@ -1,23 +1,23 @@
-main{
+main {
   text-align: center;
 }
 
-h1 {
+.home-h1 {
   font-size: 10.5vw;
   line-height: 155px;
-  letter-spacing: -0.8vw;
-  font-weight: 900;
+  letter-spacing: -0.75px;
+  font-weight: 700;
   width: 90%;
   margin: 60px auto 3vh;
   color: white;
-  font-family: 'DM Sans', sans-serif; 
+  font-family: "DM Sans", sans-serif;
 }
 
-p {
+.home-tagline {
   font-size: 1.1vw;
-  width: 54%;  
+  width: 54%;
   color: white;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   margin: 0 auto 40px;
 }
 
@@ -29,7 +29,8 @@ p {
   gap: 15px;
 }
 
-.b1, .b2{
+.b1,
+.b2 {
   border: none;
   padding: 10px 28px;
   border-radius: 12px;
@@ -38,36 +39,41 @@ p {
   font-weight: 400;
 }
 
-.b1{
-  background: linear-gradient(90.64deg, #72EEFF 0.47%, #FFFFFF 99.47%);
-  box-shadow: 0px 1px 10px 0px #03A5C9;
-  color: #005D7B;
-
+.b1 {
+  background: linear-gradient(90.64deg, #72eeff 0.47%, #ffffff 99.47%);
+  box-shadow: 0px 1px 10px 0px #03a5c9;
+  color: #005d7b;
 }
 
-.b2{
-  background: linear-gradient(90deg, #21BDDF 3.92%, #0B4862 100.17%);
-  border: 1px solid #FFFFFF;
-  box-shadow: 0px 1px 10px 0px #21BDDF;
+.b2 {
+  background: linear-gradient(90deg, #21bddf 3.92%, #0b4862 100.17%);
+  border: 1px solid #ffffff;
+  box-shadow: 0px 1px 10px 0px #21bddf;
   color: white;
 }
 
-.b1:hover, .b2:hover, .connect-button:hover{
+.b1:hover,
+.b2:hover,
+.connect-button:hover {
   box-shadow: none;
   transform: scale(1.03);
 }
 
-.below{
+.below {
   position: absolute;
   bottom: -180%;
   left: 0;
   width: 100%;
   aspect-ratio: 1;
-  background: rgb(2,6,8);
-  background: linear-gradient(0deg, rgba(2,6,8,1) 0%, rgba(23,58,81,1) 94%, rgba(0,0,0,1) 100%);
+  background: rgb(2, 6, 8);
+  background: linear-gradient(
+    0deg,
+    rgba(2, 6, 8, 1) 0%,
+    rgba(23, 58, 81, 1) 94%,
+    rgba(0, 0, 0, 1) 100%
+  );
   z-index: -1;
 }
-
 
 .bubbles {
   position: absolute;
@@ -79,52 +85,51 @@ p {
   pointer-events: none;
 }
 
-img{
+img {
   height: 50px;
 }
 
-.bubbleL1{
+.bubbleL1 {
   position: absolute;
   left: 10%;
   top: 20%;
   /* animation: float 10s infinite; */
 }
 
-.bubbleL2{
+.bubbleL2 {
   position: absolute;
   left: 0%;
   top: 35%;
   /* animation: float 10s infinite; */
 }
 
-.bubbleL3{
+.bubbleL3 {
   position: absolute;
   left: 14%;
   top: 40%;
   /* animation: float 10s infinite; */
 }
 
-.bubbleL4{
+.bubbleL4 {
   position: absolute;
   left: 9%;
   top: 56%;
   /* animation: float 10s infinite; */
 }
 
-.bubbleR5{
+.bubbleR5 {
   position: absolute;
   right: 4%;
   top: 40%;
   /* animation: float 10s infinite; */
 }
 
-.bubbleR6{
+.bubbleR6 {
   position: absolute;
   right: 16%;
   top: 65%;
   /* animation: float 10s infinite; */
 }
-
 
 @keyframes float {
   0% {
@@ -138,182 +143,182 @@ img{
   }
 }
 
-@media screen and (max-width:1400px) {
-  h1{
+@media screen and (max-width: 1400px) {
+  h1 {
     line-height: 140px;
   }
 }
 
-@media screen and (max-width:1300px) {
-  h1{
+@media screen and (max-width: 1300px) {
+  h1 {
     line-height: 130px;
   }
 }
 
-@media screen and (max-width:1300px) {
-  h1{
+@media screen and (max-width: 1300px) {
+  h1 {
     font-size: 11vw;
     line-height: 130px;
   }
 }
 
-@media screen and (max-width:1080px){
+@media screen and (max-width: 1080px) {
   h1 {
     font-size: 11vw;
     line-height: 120px;
     font-weight: 900;
   }
-  
+
   p {
     font-size: 1.3vw;
   }
-  
+
   .button-group {
     gap: 12px;
   }
-  
-  .b1, .b2{
+
+  .b1,
+  .b2 {
     padding: 8px 22px;
   }
-  
-  
-  .below{
-    bottom: -120%;
-  }  
 
-  img{
+  .below {
+    bottom: -120%;
+  }
+
+  img {
     height: 40px;
   }
 }
 
-@media screen and (max-width:1029px) {
+@media screen and (max-width: 1029px) {
   h1 {
     font-size: 10.5vw;
     line-height: 110px;
   }
 }
 
-@media screen and (max-width:994px) {
+@media screen and (max-width: 994px) {
   h1 {
     font-size: 10.5vw;
     line-height: 100px;
   }
-  }
+}
 
-@media screen and (max-width:894px) {
+@media screen and (max-width: 894px) {
   h1 {
     font-size: 10.5vw;
-    line-height:95px;
+    line-height: 95px;
     margin: 100px auto 5vh;
   }
 }
 
-@media screen and (max-width:834px) {
+@media screen and (max-width: 834px) {
   h1 {
-    line-height:90px;
+    line-height: 90px;
   }
-
 }
 
-@media screen and (max-width:768px){
+@media screen and (max-width: 768px) {
   h1 {
     font-size: 11.5vw;
     line-height: 87px;
     text-align: center;
   }
-  
+
   p {
     font-size: 1.3vw;
-    width: 58%;  
+    width: 58%;
   }
-  
+
   .button-group {
     gap: 10px;
   }
-  
-  .b1, .b2{
+
+  .b1,
+  .b2 {
     padding: 8px 24px;
     border-radius: 12px;
     cursor: pointer;
     font-size: 16px;
   }
-  
-  .below{
+
+  .below {
     bottom: -95%;
   }
-  
-  img{
+
+  img {
     height: 33px;
   }
-  
-  .bubbleL1{
+
+  .bubbleL1 {
     left: 9%;
     top: 23%;
   }
-  
-  .bubbleL2{
+
+  .bubbleL2 {
     left: 0%;
     top: 50%;
   }
-  
-  .bubbleL3{
+
+  .bubbleL3 {
     left: 11%;
     top: 38%;
   }
-  
-  .bubbleL4{
+
+  .bubbleL4 {
     left: 12%;
     top: 60%;
   }
-  
-  .bubbleR5{
+
+  .bubbleR5 {
     right: 4%;
     top: 35%;
   }
-  
-  .bubbleR6{
+
+  .bubbleR6 {
     right: 10%;
     top: 58%;
   }
 }
 
-@media screen and (max-width:700px) {
+@media screen and (max-width: 700px) {
   h1 {
     font-size: 10.5vw;
     line-height: 75px;
   }
   p {
-      font-size: 1.6vw;
-      width: 58%;  
+    font-size: 1.6vw;
+    width: 58%;
   }
-  .b1, .b2{
+  .b1,
+  .b2 {
     padding: 6px 18px;
     border-radius: 6px;
     font-size: 14px;
   }
 }
 
-@media screen and (max-width:600px){
+@media screen and (max-width: 600px) {
   h1 {
     font-size: 10.5vw;
     line-height: 60px;
     margin: 160px auto 5vh;
-
   }
   p {
     font-size: 1.9vw;
-    width: 58%;  
+    width: 58%;
   }
 }
 
-@media screen and (max-width:500px){
+@media screen and (max-width: 500px) {
   h1 {
     font-size: 10vw;
     line-height: 45px;
     margin: 140px auto 5vh;
   }
 
-  p{
+  p {
     font-size: 2.3vw;
     width: 70%;
   }
@@ -321,88 +326,88 @@ img{
   .button-group {
     gap: 15px;
   }
-  
-  .b1, .b2{
+
+  .b1,
+  .b2 {
     padding: 4px 18px;
     border-radius: 6px;
     font-size: 14px;
   }
 
-  img{
+  img {
     height: 25px;
   }
-  .bubbleL1{
+  .bubbleL1 {
     left: 5%;
     top: 30%;
   }
-  
-  .bubbleL2{
+
+  .bubbleL2 {
     left: 0%;
     top: 60%;
   }
-  
-  .bubbleL3{
+
+  .bubbleL3 {
     left: 8%;
     top: 45%;
   }
-  
-  .bubbleL4{
+
+  .bubbleL4 {
     left: 10%;
     top: 70%;
   }
-  
-  .bubbleR5{
+
+  .bubbleR5 {
     right: 4%;
     top: 35%;
   }
-  
-  .bubbleR6{
+
+  .bubbleR6 {
     right: 14%;
     top: 65%;
   }
 }
 
-@media screen and (max-width:426px) {
+@media screen and (max-width: 426px) {
   h1 {
     font-size: 42px;
     margin: 140px auto 5vh;
   }
 
-  p{
+  p {
     font-size: 12px;
   }
 
   .button-group {
     gap: 15px;
   }
-  
-  .b1, .b2{
+
+  .b1,
+  .b2 {
     padding: 4px 18px;
     border-radius: 6px;
     font-size: 14px;
   }
 }
 
-@media screen and (max-width:380px) {
+@media screen and (max-width: 380px) {
   h1 {
     font-size: 38px;
     margin: 150px auto 5vh;
   }
 
-  p{
+  p {
     font-size: 10px;
   }
 }
-@media screen and (max-width:350px) {
+@media screen and (max-width: 350px) {
   h1 {
     font-size: 35px;
     margin: 150px auto 5vh;
   }
 
-  p{
+  p {
     font-size: 10px;
     width: 80%;
   }
 }
-
-
