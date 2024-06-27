@@ -3,6 +3,7 @@ import "../styles/nameservice.css";
 import { Table } from 'antd';
 import 'antd/dist/reset.css';
 import { MdArrowDropDown, MdArrowDropUp, MdVerified } from "react-icons/md";
+import { Link } from 'react-router-dom';
 
 const nameServiceData = [
   {
@@ -144,13 +145,17 @@ const NameServices = () => {
       dataIndex: 'index',
       key: 'index',
       render: (text, record, index) => index + 1,
+      width: 50,
     },
     {
       title: 'Name Service',
       dataIndex: 'name',
       key: 'name',
+      width: 400,
       sorter: (a, b) => a.name.localeCompare(b.name),
       render: (text, record) => (
+        <Link to="/tld">
+
         <div className="column2">
           <img src={record.src} alt={record.name} className="service-img" />
           <div>
@@ -168,30 +173,35 @@ const NameServices = () => {
             </p>
           </div>
         </div>
+        </Link>
       ),
     },
     {
       title: 'Volume',
       dataIndex: 'volume',
       key: 'volume',
+      width: 100,
       sorter: (a, b) => parseFloat(a.volume) - parseFloat(b.volume),
     },
     {
       title: 'Domain Registered',
       dataIndex: 'domainsRegistered',
       key: 'domainsRegistered',
+      width: 150,
       sorter: (a, b) => a.domainsRegistered - b.domainsRegistered,
     },
     {
       title: 'Total Registered',
       dataIndex: 'totalRegistered',
       key: 'totalRegistered',
+      width: 150,
       sorter: (a, b) => a.totalRegistered - b.totalRegistered,
     },
     {
       title: 'Unique Holders',
       dataIndex: 'uniqueHolders',
       key: 'uniqueHolders',
+      width: 150,
       sorter: (a, b) => a.uniqueHolders - b.uniqueHolders,
     },
   ];
@@ -202,10 +212,16 @@ const NameServices = () => {
   }));
 
   return (
+    <>    
+    <h3 className="nameservice-header">Name Service</h3>
+
     <div className="nameservice">
-      <h3 className="nameservice-header">Name Service</h3>
-      <Table columns={columns} dataSource={dataWithKeys} pagination={false} />
+      <Table columns={columns} dataSource={dataWithKeys} pagination={false} scroll={{
+      y: 500,
+    }}/>
     </div>
+    </>
+
   );
 };
 
