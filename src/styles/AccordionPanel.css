@@ -1,0 +1,109 @@
+/* AccordionPanel.css */
+.accordion-panel {
+  width: 100%;
+  /* border: 1px solid #dffe00; */
+  border: 2px solid rgba(255, 255, 255, 0.18);
+  border-radius: 0.25rem;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  margin: 20px 0;
+  transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  margin: 10px 0;
+}
+.accordion-panel.primaryBorder {
+  /* border: 2px solid white; */
+}
+.accordion-header {
+  background-color: rgba(10, 10, 10, 0.8);
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.accordion-title {
+  /* color: white; */
+  color: #dffe00;
+  font-weight: 700;
+  font-family: "Chakra Petch", sans-serif;
+  font-size: 1.6rem;
+  line-height: 120%;
+}
+.isPrimaryDomain {
+  color: white;
+  /* color: #dffe00; */
+  background-color: #e0fe001f;
+  /* border: 1px solid #dffe00; */
+  padding: 0.25rem 1rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 1rem;
+  line-height: 100%;
+  margin-left: 20px;
+}
+/* .accordion-title-primary {
+  max-width: 70%;
+} */
+.accordion-header > svg {
+  fill: #dffe00;
+}
+.accordion-header:hover {
+  background-color: rgba(0, 0, 0, 1);
+}
+
+.accordion-arrow {
+  width: 1rem;
+  height: 1rem;
+  transition: transform 0.3s;
+}
+
+.open .accordion-arrow {
+  transform: rotate(-180deg);
+}
+
+.accordion-content {
+  padding: 1rem;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.6s, opacity 0.6s;
+}
+
+.open .accordion-content {
+  max-height: max-content; /* Set to a value large enough to accommodate the content */
+  opacity: 1;
+  padding: 1rem;
+}
+.open .accordion-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+.accordion-header > span {
+  max-width: 80%;
+  word-wrap: break-word;
+}
+@media (max-width: 900px) {
+  .accordion-title-primary {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-width: 80%;
+    word-wrap: break-word;
+  }
+  .isPrimaryDomain {
+    margin: 10px 0;
+    width: max-content;
+  }
+}
+@media (max-width: 768px) {
+  .accordion-header {
+    font-weight: 700;
+
+    font-size: 1.3rem;
+    line-height: 120%;
+    padding: 0.75rem 1rem;
+  }
+}

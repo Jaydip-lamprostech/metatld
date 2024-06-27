@@ -1,0 +1,356 @@
+/* ProfilePage.css */
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  max-width: 1100px;
+  margin: 50px auto;
+  min-height: 80vh;
+}
+
+.domain-title {
+  color: #dffe00;
+  font-weight: 900;
+  font-family: "Chakra Petch", sans-serif;
+  font-size: 2rem;
+  line-height: 120%;
+  text-align: left;
+  width: 100%;
+  margin: 30px 20px;
+  margin-top: 100px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.domain-title > svg {
+  border-radius: 5px;
+  padding: 6px;
+  border: 1px solid #000000;
+}
+.domain-title > svg:hover {
+  background-color: black;
+  border: 1px solid #dffe00;
+}
+
+.profile-section {
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 20px;
+  margin-bottom: 30px;
+  /* margin-bottom: 50px; */
+  gap: 50px;
+}
+
+.profile-picture {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.address-div {
+  width: auto;
+}
+.wallet-address-title {
+  font-size: x-large;
+  font-weight: 600;
+  font-family: "IBM Plex Sans", sans-serif;
+  /* letter-spacing: -0.05em; */
+  color: rgba(255, 255, 255, 0.5);
+  font-size: larger;
+  text-align: left;
+  line-height: 100%;
+  word-break: break-all;
+  margin-top: 30px;
+  margin-bottom: 5px;
+}
+.wallet-address {
+  color: #ffffff;
+  font-weight: 900;
+  font-family: "Chakra Petch", sans-serif;
+  font-size: 2rem;
+  line-height: 120%;
+  text-align: left;
+  width: 100%;
+  margin: auto;
+  word-break: break-all;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.wallet-address > svg {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.wallet-address > svg:hover {
+  transform: scale(1.05);
+}
+
+/* wallet not connected profile module styling */
+.wallect-not-connected-main {
+  margin-top: 100px;
+}
+.wallect-not-connected-main .info-section {
+  display: block;
+}
+.wallect-not-connected-main .info-column {
+  margin: 0 auto;
+  width: 80%;
+  max-width: 500px;
+}
+.wallect-not-connected-main .info_value_sub {
+  margin: 30px 0px;
+}
+.wnc-connect-wallet {
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  background-color: #dffe00;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 600;
+  /* letter-spacing: -0.05em; */
+  color: black;
+  font-size: 22px;
+  text-align: center;
+  line-height: 120%;
+}
+
+.domain_profile_page_title {
+  color: #ffffff;
+  font-size: x-large;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 300;
+}
+
+.claim-domain-btn {
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  background-color: #dffe00;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 600;
+  /* letter-spacing: -0.05em; */
+  color: black;
+  font-size: 22px;
+  text-align: center;
+  line-height: 120%;
+  margin: auto;
+  transition: all 0.5s ease;
+}
+.claim-domain-btn:hover {
+  transform: translateY(-5px);
+}
+.dnf-address-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.dnf-info {
+  text-align: center;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 600;
+  margin: 30px 0;
+  font-size: 1.5rem;
+  line-height: 150%;
+  width: 70%;
+  word-wrap: break-word;
+}
+.wallect-not-connected-main {
+  min-height: 75vh;
+}
+
+.profileNavbar {
+  background-color: rgba(10, 10, 10, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  max-width: fit-content;
+  list-style-type: none;
+  margin: 10px auto;
+  margin-bottom: 40px;
+  overflow: hidden;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.profileNavbarItem {
+  float: left;
+  display: block;
+  color: #ffffff80;
+  text-align: center;
+  padding: 10px 16px;
+  text-decoration: none;
+  margin-right: 10px;
+  position: relative;
+  font-size: medium;
+}
+
+.profileNavbarItem::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #dffe00;
+  transition: all 0.2s linear;
+  transform-origin: center;
+  right: 0;
+  -webkit-transform: scale(0);
+  transform: scale(0);
+}
+
+.profileNavbarItem:hover::after {
+  -webkit-transform: scale(1);
+  transform: scale(1);
+}
+
+.profileNavbarItem.active {
+  color: white;
+  border-bottom: 2px solid #dffe00;
+}
+.profileNavbarItem.active:hover::after {
+  -webkit-transform: scale(0);
+  transform: scale(0);
+}
+
+.profileChildComponent {
+  margin: 20px;
+  margin-bottom: 80px;
+}
+
+.profileComingSoonTitle {
+  font-weight: 700;
+  font-family: "Chakra Petch", sans-serif;
+  font-size: 2.2rem;
+  line-height: 120%;
+  text-align: center;
+  width: 85%;
+  max-width: 800px;
+  margin: auto;
+  margin-top: 100px;
+  word-break: keep-all;
+  color: #dffe00;
+}
+.profileNavbarComponentInfo {
+  font-size: small;
+  font-family: "IBM Plex Sans", sans-serif;
+  color: #ababab;
+  font-size: larger;
+  text-align: center;
+  width: 80%;
+  line-height: 180%;
+  margin: 30px auto;
+  word-break: break-word;
+}
+.domainActionButtons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 20px 16px;
+}
+.domainActionButtons > button {
+  padding: 0.5rem 1.5rem;
+  margin-left: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  font-weight: 600;
+  font-family: "Chakra Petch", sans-serif;
+  font-size: 1rem;
+  background-color: #dffe00;
+  border: 1px solid #dffe00;
+  color: black;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.domainActionButtons > button > svg {
+  width: 18px;
+
+  transition: all 0.3s ease;
+}
+.domainActionButtons > button:hover {
+  transform: translateY(-4px);
+}
+.skeletonParentDivProfile {
+  width: 80%;
+  margin: 0 auto;
+  min-height: 500px;
+  padding-top: 50px;
+}
+
+@media (max-width: 768px) {
+  .profile-section {
+    margin: 80px 5px;
+    margin-top: 20px;
+    flex-direction: row;
+    /* margin-bottom: 50px; */
+    gap: 20px;
+  }
+  .profile-picture {
+    width: 100px;
+    height: 100px;
+  }
+  .wallet-address-title {
+    font-size: medium;
+    text-align: left;
+    line-height: 100%;
+    word-break: break-all;
+    margin-top: 0px;
+    margin-bottom: 5px;
+  }
+  .wallet-address {
+    font-size: 1.1rem;
+    line-height: 120%;
+    text-align: left;
+    margin-bottom: 10px;
+  }
+
+  .dnf-info {
+    font-size: 1.2rem;
+    line-height: 150%;
+    width: 95%;
+  }
+  .claim-domain-btn {
+    padding: 8px 15px;
+    font-size: 18px;
+  }
+  .profileNavbar {
+    overflow-x: auto;
+    display: flex;
+  }
+  .profileNavbarItem {
+    padding: 8px 10px;
+    font-size: medium;
+  }
+  .profileComingSoonTitle {
+    font-size: 1.5rem;
+    margin-top: 50px;
+  }
+  .profileNavbarComponentInfo {
+    font-size: 14px;
+    width: 90%;
+  }
+  .profileChildComponent {
+    margin: 0px;
+    margin-top: 20px;
+    margin-bottom: 50px;
+  }
+  .domainActionButtons {
+    justify-content: center;
+    margin: 20px 0;
+  }
+  .domainActionButtons > button {
+    padding: 5px 10px;
+    margin: 0 5px;
+    font-size: 14px;
+  }
+  .domainActionButtons > button > svg {
+    width: 16px;
+  }
+}

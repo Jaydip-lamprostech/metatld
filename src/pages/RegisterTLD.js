@@ -10,15 +10,17 @@ function RegisterTLD() {
     tldName ? tldName.toLowerCase() : ""
   );
   const [letterConfigurations, setLetterConfigurations] = useState([
-    { letter: "", price: "" },
+    { letter: "3 letters", price: "" },
+    { letter: "4 letters", price: "" },
+    { letter: "More than 4 letters", price: "" },
   ]);
 
-  const addLetterConfiguration = () => {
-    setLetterConfigurations([
-      ...letterConfigurations,
-      { letter: "", price: "" },
-    ]);
-  };
+  // const addLetterConfiguration = () => {
+  //   setLetterConfigurations([
+  //     ...letterConfigurations,
+  //     { letter: "", price: "" },
+  //   ]);
+  // };
 
   const handleInputChange = (index, event) => {
     const values = [...letterConfigurations];
@@ -26,11 +28,11 @@ function RegisterTLD() {
     setLetterConfigurations(values);
   };
 
-  const removeLetterConfiguration = (index) => {
-    const values = [...letterConfigurations];
-    values.splice(index, 1);
-    setLetterConfigurations(values);
-  };
+  // const removeLetterConfiguration = (index) => {
+  //   const values = [...letterConfigurations];
+  //   values.splice(index, 1);
+  //   setLetterConfigurations(values);
+  // };
 
   return (
     <div className="container">
@@ -122,6 +124,7 @@ function RegisterTLD() {
                     value={config.letter}
                     onChange={(event) => handleInputChange(index, event)}
                     className="regtld-input"
+                    readOnly
                   />
                 </div>
               </div>
@@ -138,7 +141,7 @@ function RegisterTLD() {
                   />
                 </div>
               </div>
-              {letterConfigurations.length > 1 && (
+              {/* {letterConfigurations.length > 1 && (
                 <button
                   type="button"
                   className="delete-button"
@@ -146,10 +149,10 @@ function RegisterTLD() {
                 >
                   &times;
                 </button>
-              )}
+              )} */}
             </div>
           ))}
-          <div className="add-button-parent">
+          {/* <div className="add-button-parent">
             <svg
               width="41"
               height="41"
@@ -201,7 +204,7 @@ function RegisterTLD() {
                 </linearGradient>
               </defs>
             </svg>
-          </div>
+          </div> */}
         </div>
 
         <div className="stake-register">
