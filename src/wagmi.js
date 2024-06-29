@@ -1,6 +1,6 @@
 import { http, createConfig } from "wagmi";
 import { base, baseSepolia, polygonAmoy } from "wagmi/chains";
-import { coinbaseWallet } from "wagmi/connectors";
+import { coinbaseWallet, metaMask } from "wagmi/connectors";
 
 export const wagmiConfig = createConfig({
   chains: [baseSepolia, base, polygonAmoy],
@@ -8,9 +8,10 @@ export const wagmiConfig = createConfig({
   connectors: [
     coinbaseWallet({
       appName: "MetaTLDs",
-      preference: "all", // all, smartWalletOnly, eoaOnly
+      preference: "smartWalletOnly", // all, smartWalletOnly, eoaOnly
       version: "4",
     }),
+    metaMask({ preferDesktop: true, extensionOnly: true }),
   ],
   ssr: false,
   transports: {
