@@ -1,3 +1,6 @@
 .popup-open {
   overflow: hidden;
 }
+.disabled {
+  opacity: 0.5;
+}

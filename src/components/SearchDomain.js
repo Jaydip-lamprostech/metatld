@@ -1,26 +1,50 @@
 import React, { useState } from "react";
 import "../styles/domaincomponent.css";
+import { ethers } from "ethers"; // Import ethers library
 
 function SearchDomain() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [submittedTerm, setSubmittedTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
-
-  const domains = [
-    { suffix: "mode", status: "Unavailable", price: 100, available: false },
-    { suffix: "abcd", status: "Available", price: 100, available: true },
-    { suffix: "marvel", status: "Available", price: 100, available: true },
-    { suffix: "base", status: "Available", price: 100, available: true },
-  ];
 
   const handleSearch = () => {
     if (searchTerm === "") {
       setErrorMessage("Please enter domain name");
       return;
     }
-    setSubmittedTerm(searchTerm);
-    setSearchTerm("");
-    setErrorMessage("");
+
+    const requestOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+
+    fetch(
+      `https://api-metatlds.vercel.app/check-availability/${searchTerm}`,
+      requestOptions
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json(); // Parse JSON response
+      })
+      .then((data) => {
+        // Map over the data to format the price to ETH
+        const formattedResults = data.map((domain) => ({
+          ...domain,
+          priceInEth: domain.available
+            ? ethers.utils.formatEther(domain.price) + " ETH"
+            : "Not Available",
+        }));
+        setSearchResults(formattedResults);
+        setSearchTerm("");
+        setErrorMessage("");
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        setErrorMessage("Error checking domain availability");
+        setSearchResults([]);
+      });
   };
 
   const handleChange = (e) => {
@@ -59,31 +83,27 @@ function SearchDomain() {
 
       <div className="heading">Search Results</div>
       <div className="domain-result">
-        {" "}
-        {submittedTerm &&
-          domains.map((domain, index) => (
-            <div key={index} className="domain-item">
-              <div className="left">
-                <div className="domain-name">
-                  {submittedTerm}.{domain.suffix}
-                </div>
-                <div
-                  className={`status ${
-                    domain.available ? "available" : "unavailable"
-                  }`}
-                >
-                  {domain.status}
-                </div>
-              </div>
-
-              <div className="right">
-                <span className="price">${domain.price}</span>
-                <button className="buy-button" disabled={!domain.available}>
-                  Buy Now
-                </button>
+        {searchResults.map((domain, index) => (
+          <div key={index} className="domain-item">
+            <div className="left">
+              <div className="domain-name">{domain.name}</div>
+              <div
+                className={`status ${
+                  domain.available ? "available" : "unavailable"
+                }`}
+              >
+                {domain.available ? "Available" : "Unavailable"}
               </div>
             </div>
-          ))}
+
+            <div className="right">
+              <span className="price">{domain.priceInEth}</span>
+              <button className="buy-button" disabled={!domain.available}>
+                Buy Now
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

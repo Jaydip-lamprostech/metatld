@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../styles/tldcomponent.css";
+import { Link } from "react-router-dom";
 
 function SearchTLD() {
   const [tld, setTld] = useState("");
@@ -7,25 +8,42 @@ function SearchTLD() {
   const [searchedTld, setSearchedTld] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const tlds = {
-    xyz: true,
-    base: false,
-  };
-
   const handleSearch = () => {
     if (tld === "") {
       setErrorMessage("Please enter a TLD");
       return;
     }
 
-    if (tld in tlds) {
-      setIsAvailable(tlds[tld]);
-    } else {
-      setIsAvailable(false);
-    }
-    setSearchedTld(tld);
-    setTld("");
-    setErrorMessage("");
+    const requestOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+
+    fetch(
+      `https://api-metatlds.vercel.app/check-available-tld/${tld}`,
+      requestOptions
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json(); // Parse JSON response
+      })
+      .then((data) => {
+        if (data.available !== undefined) {
+          setIsAvailable(data.available);
+          setSearchedTld(tld);
+          setTld("");
+          setErrorMessage("");
+        } else {
+          throw new Error("Unexpected response format");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        setErrorMessage("Error checking TLD availability");
+        setIsAvailable(false);
+      });
   };
 
   const handleChange = (e) => {
@@ -67,7 +85,12 @@ function SearchTLD() {
           <div className="tldname">{searchedTld}</div>
           <div className="availability">
             <div>{isAvailable ? "Available" : "Unavailable"}</div>
-            <button disabled={!isAvailable}>Stake and Register</button>
+            <Link
+              to={`/register/tld?tldName=${searchedTld}`}
+              className={!isAvailable ? "disabled" : null}
+            >
+              Stake and Register
+            </Link>
           </div>
         </div>
       )}

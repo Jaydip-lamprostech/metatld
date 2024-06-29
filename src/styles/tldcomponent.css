@@ -3,7 +3,6 @@
   padding: 50px 150px;
   box-sizing: border-box;
   font-family: "Space Grotesk", sans-serif;
-
 }
 
 .search-container {
@@ -40,7 +39,7 @@
   cursor: pointer;
 }
 
-.error-message{
+.error-message {
   padding: 10px;
   color: red;
   letter-spacing: normal1px;
@@ -62,7 +61,7 @@
   font-size: 18px;
 }
 
-.availability{
+.availability {
   display: flex;
   align-items: center;
   gap: 80px;
@@ -70,17 +69,17 @@
   font-weight: 700;
 }
 
-.tldname{
-  color: #B4E8FF;
+.tldname {
+  color: #b4e8ff;
   font-weight: 700;
 }
 
-.availability button{
+.availability a {
   background: transparent;
   border: none;
   outline: none;
   padding: 10px 30px;
-  background: linear-gradient(90deg, #B4E8FF 0%, #72EEFF 100%);
+  background: linear-gradient(90deg, #b4e8ff 0%, #72eeff 100%);
   color: black;
   border-radius: 25px;
   font-weight: 400;
@@ -88,8 +87,13 @@
   cursor: pointer;
 }
 
-.availability button:disabled {
-  background: linear-gradient(90deg, rgba(180, 232, 255, 0.26) 0%, rgba(114, 238, 255, 0.26) 100%);
-  color: #B4E8FFA8;
+.availability a.disabled {
+  background: linear-gradient(
+    90deg,
+    rgba(180, 232, 255, 0.26) 0%,
+    rgba(114, 238, 255, 0.26) 100%
+  );
+  color: #b4e8ffa8;
   cursor: not-allowed;
+  pointer-events: none;
 }
