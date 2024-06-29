@@ -6,13 +6,17 @@ import reportWebVitals from "./reportWebVitals";
 import "react-tooltip/dist/react-tooltip.css";
 import "@coinbase/onchainkit/styles.css";
 import OnchainProviders from "./OnchainProviders";
+import { ApolloProvider } from "@apollo/client";
+import client from "./common/apolloClient";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <OnchainProviders>
-      <App />
-    </OnchainProviders>
+    <ApolloProvider client={client}>
+      <OnchainProviders>
+        <App />
+      </OnchainProviders>
+    </ApolloProvider>
   </React.StrictMode>
 );
 

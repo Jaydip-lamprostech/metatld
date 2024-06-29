@@ -12,13 +12,43 @@ import MoreAboutDomains from "../components/profile/MoreAboutDomains";
 import DomainOwnership from "../components/profile/DomainOwnership";
 import ProfileDomainNavbar from "../components/profile/ProfileDomainNavbar";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import { useApolloClient, gql } from "@apollo/client";
 // import resolverContractABI from "../artifacts/contracts/PublicResolver.json";
 // import reverseRegistrarABI from "../artifacts/contracts/ReverseRegistrar.json";
 import { ethers } from "ethers";
 
+const GET_DOMAINS = gql`
+  query GetDomains {
+    tlds(where: { owner: "0x5428dac9103799f18eb6562ed85e48e0790d4643" }) {
+      tld
+      owner
+      identifier
+      id
+      createdAt
+      baseUri
+    }
+    nameRegistereds(
+      where: { owner: "0x5428dac9103799f18eb6562ed85e48e0790d4643" }
+    ) {
+      owner
+      name
+      label
+      identifier
+      id
+      expires
+      blockTimestamp
+      blockNumber
+      baseCost
+      transactionHash
+    }
+  }
+`;
+
 const UserProfile = () => {
   const { address } = useAccount();
   const { chainId } = useChainId();
+  const client = useApolloClient();
+
   const [primaryDomain, setPrimaryDomain] = useState(null);
   const [domains, setDomains] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -28,6 +58,17 @@ const UserProfile = () => {
   // const [isPrimaryDomain, setIsPrimaryDomain] = useState("");
 
   const [activeItems, setActiveItems] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data } = await client.query({ query: GET_DOMAINS });
+        console.log(data);
+      } catch (error) {}
+    };
+
+    fetchData();
+  }, [client]);
 
   const fetchData = useCallback(async () => {
     try {
