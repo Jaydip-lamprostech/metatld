@@ -5,6 +5,7 @@ import b3 from "../images/bubble3.svg";
 import b4 from "../images/bubble4.svg";
 import b5 from "../images/bubble5.svg";
 import b6 from "../images/bubble6.svg";
+import { Link } from "react-router-dom";
 
 function Home() {
   return (
@@ -36,8 +37,12 @@ function Home() {
         ante eu laoreet efficitur, ipsum velit sodales sem
       </p>
       <div className="button-group">
-        <button className="b1">Button</button>
-        <button className="b2">Button</button>
+        <Link className="b1" to="/search?type=tld">
+          Register TLD
+        </Link>
+        <Link className="b2" to="/search?type=domain">
+          Get Domain
+        </Link>
       </div>
 
       <div className="below"></div>
