@@ -1,26 +1,34 @@
 import React, { useState } from "react";
 import "../styles/RegisterTLD.css";
 import { useSearchParams } from "react-router-dom";
+import TldFactoryABI from "../artifacts/contracts/admin/TldFactory.sol/TldFactory.json";
+import { ethers } from "ethers";
+import { useChainId } from "wagmi";
 
 function RegisterTLD() {
   const [searchParams] = useSearchParams();
   const tldName = searchParams.get("tldName");
-  console.log(tldName);
+  const [identifi, setIdentifier] = useState()
   const [showTLDName, setTLDName] = useState(
     tldName ? tldName.toLowerCase() : ""
   );
+  const chainId = 84532;
+  // console.log("chainid",chainId);
+
   const [letterConfigurations, setLetterConfigurations] = useState([
     { letter: "3 letters", price: "" },
     { letter: "4 letters", price: "" },
     { letter: "More than 4 letters", price: "" },
   ]);
 
-  // const addLetterConfiguration = () => {
-  //   setLetterConfigurations([
-  //     ...letterConfigurations,
-  //     { letter: "", price: "" },
-  //   ]);
-  // };
+  const [minDomainLength, setMinDomainLength] = useState("");
+  const [maxDomainLength, setMaxDomainLength] = useState("");
+  const [minRegistrationDuration, setMinRegistrationDuration] = useState("");
+  const [minRenewDuration, setMinRenewDuration] = useState("");
+  const [mintCap, setMintCap] = useState("");
+
+  const minRegistrationDurationInSeconds = parseInt(minRegistrationDuration) * 365 * 24 * 60 * 60;
+  const minRenewDurationInSeconds = parseInt(minRenewDuration) * 365 * 24 * 60 * 60;
 
   const handleInputChange = (index, event) => {
     const values = [...letterConfigurations];
@@ -28,16 +36,151 @@ function RegisterTLD() {
     setLetterConfigurations(values);
   };
 
-  // const removeLetterConfiguration = (index) => {
-  //   const values = [...letterConfigurations];
-  //   values.splice(index, 1);
-  //   setLetterConfigurations(values);
+  const handleStakeAndRegister = async (event) => {
+    event.preventDefault();
+
+    if (!window.ethereum) {
+      alert("Please install Smart Wallet!");
+      return;
+    }
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const signer = provider.getSigner();
+    const contractAddress = process.env.REACT_APP_TLD_FACTORY;
+    console.log("tldfactory contract address:",contractAddress);
+    const contract = new ethers.Contract("0x79bED8A36B5Bb2f57268242FE53a0D4F3aFbf573", TldFactoryABI.abi, signer);
+
+
+    const ethPerUsd = 1 /3000;
+    
+    const prices = letterConfigurations.map(config => ethers.utils.parseUnits((config.price * ethPerUsd).toString(), "ether"));
+    const tldOwner = await signer.getAddress();
+
+    // const now = await getCurrentUnixTime();
+
+    const referralComissions = [
+      {
+        minimumReferralCount: 1,
+        referrerRate: 10,
+        refereeRate: 5,
+        isValid: true,
+      },
+      {
+        minimumReferralCount: 3,
+        referrerRate: 15,
+        refereeRate: 10,
+        isValid: true,
+      },
+    ];
+  
+    // Set the public registration start time to 2 minutes from now
+    const publicRegistrationStartTime = new Date() + 120
+
+    console.log(publicRegistrationStartTime)
+
+    const initData = {
+      baseUri: "https://gateway.lighthouse.storage/ipfs/", // Add the base URI if applicable
+      config: {
+        minDomainLength: parseInt(minDomainLength),
+        maxDomainLength: parseInt(maxDomainLength),
+        minRegistrationDuration: minRegistrationDurationInSeconds,
+        minRenewDuration: minRenewDurationInSeconds,
+        mintCap: parseInt(mintCap)
+      },
+      letters: letterConfigurations.map(config => parseInt(config.letter)),
+      prices,
+      enableGiftCard: true,
+      giftCardTokenIds: [],
+      giftCardPrices: [],
+      enableReferral: true,
+      referralLevels: [1, 2],
+      referralComissions: referralComissions,
+      enablePreRegistration: false, // Disable pre-registration
+      preRegiConfig: {
+        enableAuction: false,
+        auctionStartTime: 0,
+        auctionInitialEndTime: 0,
+        auctionExtendDuration: 0,
+        auctionRetentionDuration: 0,
+        auctionMinRegistrationDuration: 0,
+        enableFcfs: false,
+        fcfsStartTime: 0,
+        fcfsEndTime: 0,
+      },
+      preRegiDiscountRateBps: [], // Empty pre-registration discount rates
+      publicRegistrationStartTime: publicRegistrationStartTime,
+      publicRegistrationPaused: false,
+    }
+
+    try {
+      const stakeSuccessful = await handleStake(contract, tldOwner, showTLDName, chainId);
+      if (stakeSuccessful) {
+        await handleCreateDomainService(contract, tldOwner, initData);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Failed to register TLD");
+    }
+  };
+
+  const handleStake = async (contract, tldOwner, tldName, chainId) => {
+    const MINIMUM_STAKE = "0.01"; // Replace with actual minimum stake value
+    const stakeAmount = ethers.utils.parseUnits(MINIMUM_STAKE, "ether");
+    const identifier = calIdentifier(chainId, tldOwner, tldName);
+    console.log("identifier",identifier)
+    try {
+      const tx = await contract.stake(identifier, tldName, { value: stakeAmount });
+      await tx.wait();
+      alert("Stake successful!");
+      return true;
+    } catch (error) {
+      console.error("Staking failed", error);
+      alert("Staking failed");
+      return false;
+    }
+  };
+
+  const handleCreateDomainService = async (contract, tldOwner, initData) => {
+    try {
+      const tx = await contract.createDomainService(
+        showTLDName,
+        tldOwner,
+        initData
+      );
+
+      await tx.wait();
+      alert("TLD registered successfully!");
+    } catch (error) {
+      console.error("Domain service creation failed", error);
+      throw new Error("Domain service creation failed");
+    }
+  };
+
+  const toBigInt = (num) => BigInt(num);
+
+  const calIdentifier = (chainId, owner, tld) => {
+    const hash = ethers.utils.solidityKeccak256(
+      ["address", "string"],
+      [owner, tld]
+    );
+    return (
+      (toBigInt(chainId) << toBigInt(224)) + (toBigInt(hash) >> toBigInt(32))
+    ).toString();
+  };
+
+  // const handleCalculate = () => {
+  //   const id = calIdentifier(84532, "0x2131a6c0b66be63e38558dc5fbe4c0ab65b9906e" , "meta");
+  //   setIdentifier(id.toString());
+
+  //   console.log(identifi)
   // };
+
+ 
 
   return (
     <div className="container">
       <h1 className="regtld-h1">Create Your Own TLD</h1>
-      <form className="regtld-form">
+      <form className="regtld-form" onSubmit={handleStakeAndRegister}>
         <div className="input-group mb-40">
           <label>TLD Name</label>
           <div className="regtld-input-parent">
@@ -45,7 +188,7 @@ function RegisterTLD() {
               type="text"
               placeholder="spiderman.base"
               className="regtld-input"
-              value={showTLDName ? "." + showTLDName : null}
+              value={showTLDName ? "." + showTLDName : ""}
               readOnly
             />
           </div>
@@ -62,6 +205,8 @@ function RegisterTLD() {
                 type="number"
                 placeholder="Enter Minimum Domain Length"
                 className="regtld-input"
+                value={minDomainLength}
+                onChange={(e) => setMinDomainLength(e.target.value)}
               />
             </div>
           </div>
@@ -72,6 +217,8 @@ function RegisterTLD() {
                 type="number"
                 placeholder="Enter Maximum Domain Length"
                 className="regtld-input"
+                value={maxDomainLength}
+                onChange={(e) => setMaxDomainLength(e.target.value)}
               />
             </div>
           </div>
@@ -84,6 +231,8 @@ function RegisterTLD() {
                 type="text"
                 placeholder="1 year"
                 className="regtld-input"
+                value={minRegistrationDuration}
+                onChange={(e) => setMinRegistrationDuration(e.target.value)}
               />
             </div>
           </div>
@@ -94,6 +243,8 @@ function RegisterTLD() {
                 type="text"
                 placeholder="e.g., 10 days"
                 className="regtld-input"
+                value={minRenewDuration}
+                onChange={(e) => setMinRenewDuration(e.target.value)}
               />
             </div>
           </div>
@@ -105,6 +256,8 @@ function RegisterTLD() {
               type="number"
               placeholder="e.g., 10,000"
               className="regtld-input"
+              value={mintCap}
+              onChange={(e) => setMintCap(e.target.value)}
             />
           </div>
         </div>
@@ -141,76 +294,16 @@ function RegisterTLD() {
                   />
                 </div>
               </div>
-              {/* {letterConfigurations.length > 1 && (
-                <button
-                  type="button"
-                  className="delete-button"
-                  onClick={() => removeLetterConfiguration(index)}
-                >
-                  &times;
-                </button>
-              )} */}
             </div>
           ))}
-          {/* <div className="add-button-parent">
-            <svg
-              width="41"
-              height="41"
-              viewBox="0 0 41 41"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              onClick={addLetterConfiguration}
-            >
-              <mask
-                id="mask0_153_223"
-                maskUnits="userSpaceOnUse"
-                x="1"
-                y="1"
-                width="39"
-                height="39"
-              >
-                <path
-                  d="M20.3804 37.3625C29.7601 37.3625 37.3634 29.7593 37.3634 20.3796C37.3634 10.9999 29.7601 3.39661 20.3804 3.39661C11.0007 3.39661 3.39746 10.9999 3.39746 20.3796C3.39746 29.7593 11.0007 37.3625 20.3804 37.3625Z"
-                  fill="white"
-                  stroke="white"
-                  strokeWidth="3.39659"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M20.3801 13.5864V27.1728M13.5869 20.3796H27.1733"
-                  stroke="black"
-                  strokeWidth="3.39659"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </mask>
-              <g mask="url(#mask0_153_223)">
-                <path
-                  d="M0 1.52588e-05H40.7591V40.7591H0V1.52588e-05Z"
-                  fill="url(#paint0_linear_153_223)"
-                />
-              </g>
-              <defs>
-                <linearGradient
-                  id="paint0_linear_153_223"
-                  x1="20.3796"
-                  y1="1.52588e-05"
-                  x2="20.3796"
-                  y2="40.7591"
-                  gradientUnits="userSpaceOnUse"
-                >
-                  <stop stopColor="#72EEFF" />
-                  <stop offset="1" stopColor="#B4E9FF" />
-                </linearGradient>
-              </defs>
-            </svg>
-          </div> */}
         </div>
 
         <div className="stake-register">
-          <button type="submit" className="submit-button">
+          <button onClick={handleStakeAndRegister}   type="submit" className="submit-button">
             Stake and Register
           </button>
+
+          {/* <button onClick={ handleCalculate}> Handle call identifier</button> */}
         </div>
       </form>
     </div>
