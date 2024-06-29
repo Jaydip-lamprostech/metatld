@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../styles/domaincomponent.css";
 import { ethers } from "ethers"; // Import ethers library
+import { Link } from "react-router-dom";
 
 function SearchDomain() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -36,8 +37,8 @@ function SearchDomain() {
             ? ethers.utils.formatEther(domain.price) + " ETH"
             : "Not Available",
         }));
+        console.log("formattedResults", formattedResults);
         setSearchResults(formattedResults);
-        setSearchTerm("");
         setErrorMessage("");
       })
       .catch((error) => {
@@ -98,9 +99,13 @@ function SearchDomain() {
 
             <div className="right">
               <span className="price">{domain.priceInEth}</span>
-              <button className="buy-button" disabled={!domain.available}>
+              <Link
+                className="buy-button"
+                disabled={!domain.available}
+                to={`/register/domain?tldName=${domain.tld}&query=${searchTerm}&tldIdentifier=${domain.identifier}&domainPrice=${domain.price}`}
+              >
                 Buy Now
-              </button>
+              </Link>
             </div>
           </div>
         ))}

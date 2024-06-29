@@ -14,6 +14,11 @@ function RegisterDomain() {
   console.log(searchDomain);
   const tldName = searchParams.get("tldName");
   console.log(tldName);
+
+  const tldIdentifier = searchParams.get("tldIdentifier");
+  console.log(tldIdentifier);
+  const domainPrice = searchParams.get("domainPrice");
+  console.log(domainPrice);
   const [showTLDName, setTLDName] = useState(
     tldName ? tldName.toLowerCase() : ""
   );
