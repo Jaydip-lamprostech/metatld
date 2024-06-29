@@ -1,0 +1,77 @@
+.text-table {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.single-header {
+  width: 100%;
+  padding: 0px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 40px 0px;
+}
+
+.domain-text {
+  color: white;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.parts{
+    width: 40%;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-content: right;
+}
+
+.custom-search,
+.custom-select {
+  height: 40px;
+  width: 70%;
+}
+
+.custom-search .ant-input,
+.custom-search .ant-input-search-button,
+.custom-select .ant-select-selector {
+  height: 40px;
+  line-height: 40px;
+}
+
+.custom-search .ant-input-search-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-search .ant-input:focus,
+.custom-search .ant-input-focused,
+.custom-search .ant-input-search-button:focus,
+.custom-search .ant-input-search-button-focused,
+.custom-search .ant-input-search-button .ant-btn:focus,
+.custom-search .ant-input-search-button .ant-btn:active,
+.custom-select .ant-select-selector:focus,
+.custom-select .ant-select-selector-focused {
+  outline: 2px solid transparent;
+  box-shadow: 0 0 0 3px rgba(24, 144, 255, 0.2); /* Light blue shadow with 1px gap */
+}
+
+.custom-search .ant-input-search-button .ant-btn,
+.custom-select .ant-select-selector {
+  outline: none; /* Ensure no default outline is shown */
+}
+
+.refresh-button {
+  height: 40px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 25px;
+  padding: 0px 10px;
+  color: white;
+  border: 1px solid white;
+}
