@@ -348,7 +348,7 @@ function RegisterTLD() {
             type="submit"
             className="submit-button"
           >
-            Stake and Register
+            Stake and Deploy
           </button>
 
           {/* <button onClick={ handleCalculate}> Handle call identifier</button> */}

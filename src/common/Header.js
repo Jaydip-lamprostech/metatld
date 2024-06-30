@@ -49,6 +49,8 @@ function Header() {
 
       {address ? (
         <div className="user-profile-navbar">
+          <Link to={`/search?type=tld`}>Deploy TLD</Link>
+          <Link to={`/search?type=domain`}>Buy Domain</Link>
           <Link to={`/user/${address}`}>Profile</Link>
           <div style={{ width: "150px" }}>
             <div className="account-info-panel-md-hidden">
