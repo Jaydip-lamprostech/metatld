@@ -1,20 +1,25 @@
-.homelayout{
-    height: 100vh !important;
-    margin: 0;
-    padding: 50px 150px;
-    background: linear-gradient(0deg, #000000 0%, rgba(6, 27, 47, 0.43) 40.9%, #00B8D2 68.8%, #B4E9FF 85.31%);
-    overflow: hidden !important;
+.homelayout {
+  min-height: 100vh !important;
+  margin: 0;
+  padding: 50px 150px;
+  background: linear-gradient(
+    0deg,
+    #000000 0%,
+    rgba(6, 27, 47, 0.43) 40.9%,
+    #00b8d2 68.8%,
+    #b4e9ff 85.31%
+  );
+  overflow: hidden !important;
 }
 
-
-@media screen and (max-width:994px) {
-    .homelayout{
-      padding: 50px 100px;
-    }
+@media screen and (max-width: 994px) {
+  .homelayout {
+    padding: 50px 100px;
+  }
 }
 
-@media screen and (max-width:768px){
-    .homelayout{
-      padding: 40px 60px;
-    }
+@media screen and (max-width: 768px) {
+  .homelayout {
+    padding: 40px 60px;
+  }
 }

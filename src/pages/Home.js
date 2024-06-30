@@ -32,11 +32,12 @@ function Home() {
       </div>
 
       <h1 className="home-h1">
-        Experience the Freedom of Permissionless TLDs and Domains
+        Permissionless TLDs and Domains: One Click Away
       </h1>
       <p className="home-tagline">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porta,
-        ante eu laoreet efficitur, ipsum velit sodales sem
+        Create and manage your own TLDs with ease. Stake ETH, deploy with one
+        click, and enjoy transparent, decentralized domain registration and
+        management, without the need for central approval or developers.
       </p>
       <div className="button-group">
         <Link className="b1" to="/search?type=tld">
