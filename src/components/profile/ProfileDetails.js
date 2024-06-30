@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { ethers } from "ethers";
 import Web3 from "web3";
 import SetPrimaryDomain from "../SetPrimaryDomain";
+import logo from "../../assets/metatld_logo_light.png";
 
 export const getSubnode = async (domainName) => {
   const web3 = new Web3(window.ethereum);
@@ -44,104 +45,18 @@ function ProfileDetails(props) {
   const [ownerAddress, setOwnerAddress] = useState();
   const [managerAddress, setManagerAddress] = useState();
   const [ethRecordAddress, setEthRecordAddress] = useState();
-
-  const getOwnershipDetails = async () => {
-    try {
-      const domainName = props.domainDetails.name.replace(".mode", "");
-      const { ethereum } = window; // Ensure that the user is connected to the expected chain
-      const provider = new ethers.providers.Web3Provider(ethereum);
-      const { chainId } = await provider.getNetwork();
-
-      const signer = provider.getSigner();
-
-      const resolverContractAddress =
-        chainId === 919
-          ? process.env.REACT_APP_CONTRACT_ADDRESS_RESOLVER
-          : chainId === 34443
-          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_RESOLVER
-          : null;
-
-      const baseContractAddress =
-        chainId === 919
-          ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID_BASE
-          : chainId === 34443
-          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_SPACEID_BASE
-          : null;
-
-      const registryContractAddress =
-        chainId === 919
-          ? process.env.REACT_APP_CONTRACT_ADDRESS_REGISTRY
-          : chainId === 34443
-          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_REGISTRY
-          : null;
-
-      //to find a eth record address of the domain name
-      const resolverContract = new ethers.Contract(
-        resolverContractAddress,
-        // resolverContractABI.abi,
-        signer
-      );
-      const node = getSubnode(domainName);
-      const record = await resolverContract.addr(node);
-      // console.log("record  - ", record);
-      setEthRecordAddress(record ? record : "");
-
-      // to find resolver and manager address of the domain name
-      const registryResolverContract = new ethers.Contract(
-        registryContractAddress,
-        // registryResolverContractABI.abi,
-        signer
-      );
-      const resolver = await registryResolverContract.resolver(node);
-      // console.log("resolver - ", resolver);
-      const manager = await registryResolverContract.owner(node);
-      // console.log("manager - ", manager);
-
-      //to find a owner of the domain name
-      const baseContract = new ethers.Contract(
-        baseContractAddress,
-        // baseContractABI.abi,
-        signer
-      );
-      const tokenId = ethers.utils.keccak256(
-        ethers.utils.toUtf8Bytes(domainName)
-      );
-      settokenId(tokenId);
-      const owner = await baseContract.ownerOf(tokenId);
-      // console.log("owner - ", owner);
-      setOwnerAddress(owner ? owner : "");
-    } catch (error) {
-      console.log(error);
+  const extractSuffix = (input) => {
+    const parts = input.split(".");
+    if (parts.length > 1) {
+      return parts[parts.length - 1];
+    } else {
+      return ""; // Handle case where there's no dot in the input
     }
   };
-
-  useEffect(() => {
-    getOwnershipDetails();
-  }, []);
-
-  const handleListNowButtonClick = async (tokenId) => {
-    const { ethereum } = window; // Ensure that the user is connected to the expected chain
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const { chainId } = await provider.getNetwork();
-    if (chainId === 919) {
-      window.open(
-        `https://sid-marketplace-git-feat-dev-30-space-id.vercel.app/name/7439/${toBigInt(
-          tokenId
-        )}`
-      );
-    } else if (chainId === 34443) {
-      window.open(`https://space.id/name/6/${toBigInt(tokenId)}`);
-    }
-  };
-
   return (
     <>
       <div className="profile-section">
-        <img
-          className="profile-picture"
-          src={props.domainDetails.image}
-          alt="mode nft domain name"
-        />
+        <img className="profile-picture" src={logo} alt="domain nft" />
         <div className="address-div">
           <p className="wallet-address-title">Address</p>
           <p className="wallet-address">
@@ -152,7 +67,9 @@ function ProfileDetails(props) {
               : "Connect Your Wallet"}
           </p>
           <p className="wallet-address-title">Parent</p>
-          <p className="wallet-address">MODE</p>
+          <p className="wallet-address">
+            {extractSuffix(props.domainDetails.name)}
+          </p>
         </div>
       </div>
       <div className="domainActionButtons">
@@ -161,6 +78,7 @@ function ProfileDetails(props) {
             document.body.classList.add("popup-open");
             setExtendPopup(true);
           }}
+          className="disabled"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -177,6 +95,7 @@ function ProfileDetails(props) {
             document.body.classList.add("popup-open");
             setTransferDomainPopup(true);
           }}
+          className="disabled"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -188,7 +107,7 @@ function ProfileDetails(props) {
           </svg>
           Transfer
         </button>
-        <button onClick={() => handleListNowButtonClick(tokenId)}>
+        <button className="disabled">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="24"
@@ -201,7 +120,7 @@ function ProfileDetails(props) {
         </button>
       </div>
       <DomainInformation domainDetails={props.domainDetails} />
-      {props.isNotPrimaryDomain ? (
+      {/* {props.isNotPrimaryDomain ? (
         <div className="domainActionButtons">
           <button
             onClick={() => {
@@ -212,7 +131,7 @@ function ProfileDetails(props) {
             Set as Primary Name
           </button>
         </div>
-      ) : null}
+      ) : null} */}
       {showChangePrimaryDomainPopup ? (
         <SetPrimaryDomain
           setChangePrimaryDomainPopup={setChangePrimaryDomainPopup}

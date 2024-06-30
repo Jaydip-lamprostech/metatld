@@ -16,44 +16,45 @@ import { useApolloClient, gql } from "@apollo/client";
 // import resolverContractABI from "../artifacts/contracts/PublicResolver.json";
 // import reverseRegistrarABI from "../artifacts/contracts/ReverseRegistrar.json";
 import { ethers } from "ethers";
-
-const GET_DOMAINS = gql`
-  query GetDomains {
-    tlds(where: { owner: "0x5428dac9103799f18eb6562ed85e48e0790d4643" }) {
-      tld
-      owner
-      identifier
-      id
-      createdAt
-      baseUri
-    }
-    nameRegistereds(
-      where: { owner: "0x5428dac9103799f18eb6562ed85e48e0790d4643" }
-    ) {
-      owner
-      name
-      label
-      identifier
-      id
-      expires
-      blockTimestamp
-      blockNumber
-      baseCost
-      transactionHash
-    }
-  }
-`;
+import TLDInformation from "../components/TLDInformation";
 
 const UserProfile = () => {
   const { address } = useAccount();
   const { chainId } = useChainId();
   const client = useApolloClient();
 
+  const GET_DOMAINS = gql`
+    query GetDomains {
+      tlds(where: { owner: "${address}" }) {
+        tld
+        owner
+        identifier
+        id
+        createdAt
+        baseUri
+      }
+      nameRegistereds(
+        where: { owner: "${address}" }
+      ) {
+        owner
+        name
+        label
+        identifier
+        id
+        expires
+        blockTimestamp
+        blockNumber
+        baseCost
+        transactionHash
+      }
+    }
+  `;
   const [primaryDomain, setPrimaryDomain] = useState(null);
   const [domains, setDomains] = useState([]);
   const [loading, setLoading] = useState(true);
   const [domainFound, setDomainFound] = useState(true);
-
+  const [tldsFound, setTldsFound] = useState(true);
+  const [tlds, setTlds] = useState([]);
   //if the primary name can be fetched separately
   // const [isPrimaryDomain, setIsPrimaryDomain] = useState("");
 
@@ -61,102 +62,33 @@ const UserProfile = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const { data } = await client.query({ query: GET_DOMAINS });
         console.log(data);
-      } catch (error) {}
+        if (data?.nameRegistereds.length > 0) {
+          setDomainFound(true);
+          setDomains(data?.nameRegistereds);
+        }
+        // else {
+        //   setDomainFound(false);
+        //   setDomains([]);
+        // }
+        if (data?.tlds.length > 0) {
+          setTldsFound(true);
+          setTlds(data?.tlds);
+        }
+        // else {
+        //   setTldsFound(false);
+        //   setTlds([]);
+        // }
+      } catch (error) {
+      } finally {
+        setLoading(false);
+      }
     };
-
-    fetchData();
-  }, [client]);
-
-  const fetchData = useCallback(async () => {
-    try {
-      setLoading(true);
-      const testnet_endPoint = `https://modedomains-nft-apis.vercel.app/api/getAllDomains/${address}`;
-      const mainnet_endpoint = `https://modedomains-nft-apis.vercel.app/api/mainnet/getAllDomains/${address}`;
-      let response;
-
-      if (chainId === 919) {
-        response = await fetch(testnet_endPoint);
-      } else if (chainId === 34443) {
-        response = await fetch(mainnet_endpoint);
-      }
-
-      const data = await response.json();
-
-      if (data && data.length > 0) {
-        setDomainFound(true);
-        setDomains(data);
-        // console.log(data);
-      } else {
-        setDomainFound(false);
-        setDomains([]);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      setDomainFound(false);
-    } finally {
-      setLoading(false);
-    }
-  }, [address, chainId]);
-
-  const getPrimaryName = async () => {
-    try {
-      const { ethereum } = window; // Ensure that the user is connected to the expected chain
-      const provider = new ethers.providers.Web3Provider(ethereum);
-
-      const signer = provider.getSigner();
-
-      const resolverContractAddress =
-        chainId === 919
-          ? process.env.REACT_APP_CONTRACT_ADDRESS_RESOLVER
-          : chainId === 34443
-          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_RESOLVER
-          : null;
-
-      const reverseRegistrarContractAddress =
-        chainId === 919
-          ? process.env.REACT_APP_CONTRACT_ADDRESS_REVERSE_REGISTRAR
-          : chainId === 34443
-          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_REVERSE_REGISTRAR
-          : null;
-
-      const resolverContract = new ethers.Contract(
-        resolverContractAddress,
-        // resolverContractABI.abi,
-        signer
-      );
-
-      const reverseRegistrarContract = new ethers.Contract(
-        reverseRegistrarContractAddress,
-        // reverseRegistrarABI.abi,
-        signer
-      );
-      // console.log(resolverContract, "resolverContract");
-      const reverseNode = await reverseRegistrarContract.node(address);
-
-      // console.log(reverseNode);
-      const primaryName = await resolverContract.name(reverseNode);
-      // console.log(primaryName);
-
-      return primaryName;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    if (address) {
-      getPrimaryName()
-        .then((primaryName) => {
-          setPrimaryDomain(primaryName);
-        })
-        .finally(() => {
-          fetchData();
-        });
-    }
-  }, [address, fetchData]);
+    if (address) fetchData();
+  }, [client, address]);
 
   const handleNavbarClick = (instanceId, itemName) => {
     setActiveItems((prevActiveItems) => ({
@@ -171,7 +103,46 @@ const UserProfile = () => {
 
   return (
     <div className="profile-container">
-      <h1 className="domain_profile_page_title">Your Domain Names</h1>
+      {loading ? (
+        <SkeletonTheme baseColor="#202020" highlightColor="#444">
+          <div className="skeletonParentDivProfile">
+            {[...Array(5)].map((_, index) => (
+              <Skeleton
+                key={index}
+                width={"100%"}
+                height={50}
+                style={{ margin: "10px 0" }}
+              />
+            ))}
+          </div>
+        </SkeletonTheme>
+      ) : tldsFound && tlds.length > 0 ? (
+        tlds.map((tld, index) => (
+          <>
+            <h1 className="domain_profile_page_title">Your TLDs</h1>
+            <AccordionPanel key={index} title={tld.tld} isPrimary={false}>
+              <TLDInformation tld={tld} />
+            </AccordionPanel>
+          </>
+        ))
+      ) : !tldsFound && tlds.length === 0 ? (
+        <>
+          <h1 className="domain_profile_page_title">Your TLDs</h1>
+          <AccordionPanel title={"Domain not found for this address"}>
+            <div className="profile-section">
+              <div className="dnf-address-div">
+                <p className="dnf-info">
+                  Experience seamless, user-centric blockchain engagement on the
+                  BASE Sepolia network with MetaTLDs.
+                </p>
+                <a className="claim-domain-btn" href="/search?type=tld">
+                  Register TLD
+                </a>
+              </div>
+            </div>
+          </AccordionPanel>
+        </>
+      ) : null}
 
       {loading ? (
         <SkeletonTheme baseColor="#202020" highlightColor="#444">
@@ -188,57 +159,55 @@ const UserProfile = () => {
         </SkeletonTheme>
       ) : domainFound && domains.length > 0 ? (
         domains.map((domain, index) => (
-          <AccordionPanel
-            key={index}
-            title={domain.name}
-            isPrimary={domain.name === primaryDomain}
-          >
-            <ProfileDomainNavbar
-              instanceId={`instance${index}`}
-              activeItems={activeItems[`instance${index}`]}
-              onClick={(itemName) =>
-                handleNavbarClick(`instance${index}`, itemName)
-              }
-            />
-
-            {activeItems[`instance${index}`] === "Details" ||
-            !activeItems[`instance${index}`] ? (
-              <ProfileDetails
-                modenft={modenft}
-                domainDetails={domain}
-                primaryDomain={primaryDomain}
-                expiryDateInEpoch={
-                  domain.attributes.find(
-                    (attr) => attr.trait_type === "Expiration Date"
-                  )?.value
+          <>
+            <h1 className="domain_profile_page_title">Your Domain Names</h1>
+            <AccordionPanel key={index} title={domain.name} isPrimary={false}>
+              <ProfileDomainNavbar
+                instanceId={`instance${index}`}
+                activeItems={activeItems[`instance${index}`]}
+                onClick={(itemName) =>
+                  handleNavbarClick(`instance${index}`, itemName)
                 }
-                isNotPrimaryDomain={domain.name !== primaryDomain}
               />
-            ) : activeItems[`instance${index}`] === "Ownership" ? (
-              <DomainOwnership address={address} domainDetails={domain} />
-            ) : activeItems[`instance${index}`] === "Subnames" ? (
-              <Subnames />
-            ) : activeItems[`instance${index}`] === "Permissions" ? (
-              <PermissionsOfDomain />
-            ) : activeItems[`instance${index}`] === "MoreDetails" ? (
-              <MoreAboutDomains />
-            ) : null}
-          </AccordionPanel>
+
+              {activeItems[`instance${index}`] === "Details" ||
+              !activeItems[`instance${index}`] ? (
+                <ProfileDetails
+                  // modenft={modenft}
+                  domainDetails={domain}
+                  primaryDomain={false}
+                  expiryDateInEpoch={domain.expires}
+                  isNotPrimaryDomain={domain.name !== primaryDomain}
+                />
+              ) : activeItems[`instance${index}`] === "Ownership" ? (
+                <DomainOwnership address={address} domainDetails={domain} />
+              ) : activeItems[`instance${index}`] === "Subnames" ? (
+                <Subnames />
+              ) : activeItems[`instance${index}`] === "Permissions" ? (
+                <PermissionsOfDomain />
+              ) : activeItems[`instance${index}`] === "MoreDetails" ? (
+                <MoreAboutDomains />
+              ) : null}
+            </AccordionPanel>
+          </>
         ))
       ) : !domainFound && domains.length === 0 ? (
-        <AccordionPanel title={"Domain not found for this address"}>
-          <div className="profile-section">
-            <div className="dnf-address-div">
-              <p className="dnf-info">
-                Experience seamless, user-centric blockchain engagement on the
-                MODE network with ModeDomains.
-              </p>
-              <a className="claim-domain-btn" href="/">
-                Claim Domain
-              </a>
+        <>
+          <h1 className="domain_profile_page_title">Your Domain Names</h1>
+          <AccordionPanel title={"Domain not found for this address"}>
+            <div className="profile-section">
+              <div className="dnf-address-div">
+                <p className="dnf-info">
+                  Experience seamless, user-centric blockchain engagement on the
+                  BASE Sepolia network with MetaTLDs.
+                </p>
+                <a className="claim-domain-btn" href="/search?type=domain">
+                  Claim Domain
+                </a>
+              </div>
             </div>
-          </div>
-        </AccordionPanel>
+          </AccordionPanel>
+        </>
       ) : null}
     </div>
   );

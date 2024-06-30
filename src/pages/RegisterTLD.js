@@ -1,21 +1,23 @@
 import React, { useState } from "react";
 import "../styles/RegisterTLD.css";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import TldFactoryABI from "../artifacts/contracts/admin/TldFactory.sol/TldFactory.json";
 import { ethers } from "ethers";
-import { useChainId } from "wagmi";
+import { useAccount, useChainId } from "wagmi";
 import { toBigInt } from "web3-utils";
 import { wagmiConfig } from "../wagmi";
 import { getEthersSigner } from "../components/getEtherSigner";
 import { getEthersProvider } from "../components/getEthersProvider";
 
 function RegisterTLD() {
+  const { address } = useAccount();
   const [searchParams] = useSearchParams();
   const tldName = searchParams.get("tldName");
   const [identifi, setIdentifier] = useState();
   const [showTLDName, setTLDName] = useState(
     tldName ? tldName.toLowerCase() : ""
   );
+  let navigate = useNavigate();
   const chainId = 84532;
   // console.log("chainid",chainId);
 
@@ -191,6 +193,7 @@ function RegisterTLD() {
 
       await tx.wait();
       alert("TLD registered successfully!");
+      navigate(`/user/${address}`);
     } catch (error) {
       console.error("Domain service creation failed", error);
       throw new Error("Domain service creation failed");

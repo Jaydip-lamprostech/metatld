@@ -1,8 +1,9 @@
-import { Avatar } from "@coinbase/onchainkit/identity";
+import { Avatar, Name } from "@coinbase/onchainkit/identity";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useAccount } from "wagmi";
 import { AccountInfoPanel } from "./AccountInfoPanel";
 import "./styles.css";
+import AvatarGenerator from "../components/AvatarGenerator";
 
 export function AccountDropdown() {
   const { address } = useAccount();
@@ -13,7 +14,10 @@ export function AccountDropdown() {
         <div className="trigger-container">
           {address && (
             <button type="button" aria-label="Disconnect">
-              <Avatar address={address} />
+              <div className="wallet-button-after-connected">
+                <AvatarGenerator name={address} />
+                <Name address={address} />
+              </div>
             </button>
           )}
         </div>

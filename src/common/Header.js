@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/commonheader.css";
 import { ConnectAccount } from "@coinbase/onchainkit/wallet";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
@@ -13,22 +13,57 @@ import { getChains } from "@wagmi/core";
 import { coinbaseWallet } from "wagmi/connectors";
 import { wagmiConfig } from "../wagmi";
 import AccountConnect from "./AccountConnect";
+import logo from "../assets/metatld_logo_light.png";
+import { Account } from "../components/popup/account";
+import WrongNetworkButton from "../components/popup/WrongNetworkButton";
+import { WalletOptions } from "../components/popup/wallet-options";
+import Popup from "../components/popup/Popup";
+import { AccountInfoPanel } from "./AccountInfoPanel";
+import { AccountDropdown } from "./AccountDropdown";
 
 function Header() {
-  const { address } = useAccount();
-  const { disconnect } = useDisconnect();
-  const { connect } = useConnect();
-
   const chains = getChains(wagmiConfig);
+  const { isPending } = useConnect();
+  const { address } = useAccount();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const { connectors, connect } = useConnect();
+  const togglePopup = () => {
+    setIsPopupOpen(!isPopupOpen);
+  };
+  console.log("connectors", connectors);
+
+  function ConnectWallet() {
+    const { isConnected } = useAccount();
+    if (isConnected) return <Account />;
+    if (isConnected) return <WrongNetworkButton />;
+    return <WalletOptions />;
+  }
   console.log(chains);
+
   return (
     <header className="commonheader">
-      <div className="commonlogo">LOGO</div>
-      {/* <button className="connect-button">Connect</button> */}
-      {/* <ConnectAccount /> */}
-      <div>
-        <AccountConnect />
+      <div className="commonlogo">
+        <img src={logo} alt="logo" className="logo" />
       </div>
+
+      {address ? (
+        <div style={{ width: "150px" }}>
+          <div className="account-info-panel-md-hidden">
+            <AccountInfoPanel />
+          </div>
+          <div className="account-dropdown-md-block">
+            <AccountDropdown />
+          </div>
+        </div>
+      ) : (
+        <button className="connect-button" onClick={togglePopup}>
+          Connect
+        </button>
+      )}
+      <Popup isOpen={isPopupOpen} onClose={togglePopup}>
+        <ConnectWallet />
+      </Popup>
+
       {/* {address ? (
         <>
           <Avatar

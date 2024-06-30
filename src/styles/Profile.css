@@ -7,12 +7,13 @@
   max-width: 1100px;
   margin: 50px auto;
   min-height: 80vh;
+  font-family: "DM Sans", sans-serif;
 }
 
 .domain-title {
   color: #dffe00;
   font-weight: 900;
-  font-family: "Chakra Petch", sans-serif;
+
   font-size: 2rem;
   line-height: 120%;
   text-align: left;
@@ -27,10 +28,6 @@
   border-radius: 5px;
   padding: 6px;
   border: 1px solid #000000;
-}
-.domain-title > svg:hover {
-  background-color: black;
-  border: 1px solid #dffe00;
 }
 
 .profile-section {
@@ -47,7 +44,7 @@
 .profile-picture {
   width: 300px;
   height: 300px;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 10px;
 }
 .address-div {
@@ -56,7 +53,7 @@
 .wallet-address-title {
   font-size: x-large;
   font-weight: 600;
-  font-family: "IBM Plex Sans", sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   /* letter-spacing: -0.05em; */
   color: rgba(255, 255, 255, 0.5);
   font-size: larger;
@@ -69,7 +66,7 @@
 .wallet-address {
   color: #ffffff;
   font-weight: 900;
-  font-family: "Chakra Petch", sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-size: 2rem;
   line-height: 120%;
   text-align: left;
@@ -108,7 +105,7 @@
   border-radius: 10px;
   border: none;
   background-color: #dffe00;
-  font-family: "IBM Plex Sans", sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   font-weight: 600;
   /* letter-spacing: -0.05em; */
   color: black;
@@ -120,8 +117,11 @@
 .domain_profile_page_title {
   color: #ffffff;
   font-size: x-large;
-  font-family: "IBM Plex Sans", sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   font-weight: 300;
+  margin-top: 50px;
+  margin-bottom: 20px;
+  padding: 0;
 }
 
 .claim-domain-btn {
@@ -130,7 +130,7 @@
   border-radius: 10px;
   border: none;
   background-color: #dffe00;
-  font-family: "IBM Plex Sans", sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   font-weight: 600;
   /* letter-spacing: -0.05em; */
   color: black;
@@ -152,7 +152,7 @@
 }
 .dnf-info {
   text-align: center;
-  font-family: "IBM Plex Sans", sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   font-weight: 600;
   margin: 30px 0;
   font-size: 1.5rem;
@@ -186,6 +186,7 @@
   margin-right: 10px;
   position: relative;
   font-size: medium;
+  font-family: "Space Grotesk", sans-serif;
 }
 
 .profileNavbarItem::after {
@@ -195,7 +196,7 @@
   left: 0;
   width: 100%;
   height: 2px;
-  background-color: #dffe00;
+  background-color: #72eeff;
   transition: all 0.2s linear;
   transform-origin: center;
   right: 0;
@@ -210,7 +211,7 @@
 
 .profileNavbarItem.active {
   color: white;
-  border-bottom: 2px solid #dffe00;
+  border-bottom: 2px solid #72eeff;
 }
 .profileNavbarItem.active:hover::after {
   -webkit-transform: scale(0);
@@ -224,7 +225,7 @@
 
 .profileComingSoonTitle {
   font-weight: 700;
-  font-family: "Chakra Petch", sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   font-size: 2.2rem;
   line-height: 120%;
   text-align: center;
@@ -233,11 +234,11 @@
   margin: auto;
   margin-top: 100px;
   word-break: keep-all;
-  color: #dffe00;
+  color: #72eeff;
 }
 .profileNavbarComponentInfo {
   font-size: small;
-  font-family: "IBM Plex Sans", sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   color: #ababab;
   font-size: larger;
   text-align: center;
@@ -260,12 +261,13 @@
   align-items: center;
   gap: 5px;
   font-weight: 600;
-  font-family: "Chakra Petch", sans-serif;
+  /* font-family: "DM Sans", sans-serif; */
+  font-family: "Space Grotesk", sans-serif;
   font-size: 1rem;
-  background-color: #dffe00;
-  border: 1px solid #dffe00;
+  background: linear-gradient(180deg, #b4e8ff 0%, #72eeff 100%);
+  border: 1px solid #72eeff;
   color: black;
-  border-radius: 4px;
+  border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
 }

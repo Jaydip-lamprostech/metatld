@@ -195,3 +195,11 @@ button:disabled {
     transform: scale(0.8);
   }
 }
+
+.account-info-after-connected {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}

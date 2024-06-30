@@ -117,3 +117,20 @@
   box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
   backdrop-filter: blur(40px);
 }
+
+.logo {
+  width: 250px;
+}
+
+.wallet-button-after-connected {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  border: 1px solid #72eeff;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+.wallet-button-after-connected .text-foreground {
+  color: #72eeff !important;
+}

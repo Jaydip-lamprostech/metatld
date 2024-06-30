@@ -1,4 +1,6 @@
+import { Name } from "@coinbase/onchainkit/identity";
 import { useAccount, useDisconnect, useEnsAvatar, useEnsName } from "wagmi";
+import AvatarGenerator from "../AvatarGenerator";
 
 export function Account() {
   const { address } = useAccount();
@@ -7,9 +9,10 @@ export function Account() {
   const { data: ensAvatar } = useEnsAvatar({ name: ensName });
 
   return (
-    <div>
+    <div className="account-info-after-connected">
       {ensAvatar && <img alt="ENS Avatar" src={ensAvatar} />}
-      {address && <div>{ensName ? `${ensName} (${address})` : address}</div>}
+      <AvatarGenerator name={address} width={50} height={50} />
+      <Name address={address} />
       <button onClick={() => disconnect()}>Disconnect</button>
     </div>
   );

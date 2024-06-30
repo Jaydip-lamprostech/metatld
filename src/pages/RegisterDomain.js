@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import "../styles/RegisterDomain.css";
 import { Tooltip } from "react-tooltip";
 import { toBigInt } from "web3-utils";
 import { ethers } from "ethers";
 import axios from "axios";
-import { useChainId } from "wagmi";
+import { useAccount, useChainId } from "wagmi";
+import { getEthersProvider } from "../components/getEthersProvider";
+import { wagmiConfig } from "../wagmi";
+import { getEthersSigner } from "../components/getEtherSigner";
+import registrarController_abi from "../artifacts/contracts/controller/RegistrarController.sol/RegistrarController.json";
 
 function RegisterDomain() {
   const chainId = useChainId();
+  let navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const searchDomain = searchParams.get("query");
   console.log(searchDomain);
   const tldName = searchParams.get("tldName");
   console.log(tldName);
-
+  const { address } = useAccount();
   const tldIdentifier = searchParams.get("tldIdentifier");
   console.log(tldIdentifier);
   const domainPrice = searchParams.get("domainPrice");
@@ -22,6 +27,12 @@ function RegisterDomain() {
   const [showTLDName, setTLDName] = useState(
     tldName ? tldName.toLowerCase() : ""
   );
+  const [transactionState, setTransactionState] = useState({
+    waiting: false,
+    msg: "",
+  });
+  const [nameRegistered, setNameRegistered] = useState(false);
+
   const [ethPrice, setEthPrice] = useState(null);
   const [fetchingValue, setfetchingValue] = useState(false);
   const [domainPricewithRegistrationTime, setDomainPricewithRegistrationTime] =
@@ -32,6 +43,7 @@ function RegisterDomain() {
   );
 
   const [domainNamePrice, setdomainNamePrice] = useState(1);
+
   const [registrationPeriod, setRegistrationPeriod] = useState(1);
   const handlePeriodDecrease = () => {
     if (registrationPeriod !== 1) setRegistrationPeriod((prev) => prev - 1);
@@ -45,39 +57,19 @@ function RegisterDomain() {
     try {
       setfetchingValue("fetching...");
 
-      const rpcUrl =
-        chainId === 84532
-          ? "https://api.developer.coinbase.com/rpc/v1/base-sepolia/IdQtWiaR8wUAT5Da8g2RxA6gTL6dkz40"
-          : chainId === 8453
-          ? "https://api.developer.coinbase.com/rpc/v1/base/IdQtWiaR8wUAT5Da8g2RxA6gTL6dkz40"
-          : null;
-
-      const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
-
-      const contractAddress =
-        chainId === 919
-          ? process.env.REACT_APP_CONTRACT_ADDRESS_SPACEID
-          : chainId === 34443
-          ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS_SPACEID
-          : null;
+      const provider = await getEthersProvider(wagmiConfig);
 
       const con = new ethers.Contract(
-        contractAddress,
-        // registrarController_abi.abi,
+        "0x4EF8A2cCc0336298cd4e8f6eF3C3FBd4E5C26326",
+        registrarController_abi.abi,
         provider
       );
       const registrationDuration = 31556952 * registrationPeriod;
       // console.log(props.registrationPeriod);
       // const price = await con.getRegistrationPrice(name);
-      const identifier =
-        chainId === 919
-          ? toBigInt(process.env.REACT_APP_IDENTIFIER)
-          : chainId === 34443
-          ? toBigInt(process.env.REACT_APP_MAINNET_IDENTIFIER)
-          : null;
 
       const estimatedPriceArray = await con.rentPrice(
-        identifier,
+        tldIdentifier,
         name, // Replace with a label for your domain
         registrationDuration
       );
@@ -101,14 +93,14 @@ function RegisterDomain() {
     }
   };
 
-  // useEffect(() => {
-  //   const checking = async () => {
-  //     await domainPriceCheck(showDomainName);
-  //   };
-  //   if (showDomainName) {
-  //     checking();
-  //   }
-  // }, [registrationPeriod]);
+  useEffect(() => {
+    const checking = async () => {
+      await domainPriceCheck(showDomainName);
+    };
+    if (showDomainName) {
+      checking();
+    }
+  }, [registrationPeriod]);
 
   // useEffect to fetch data from the CoinGecko API
   useEffect(() => {
@@ -156,6 +148,105 @@ function RegisterDomain() {
       ? domainPricewithRegistrationTime
       : domainNamePrice
   );
+
+  const registerName = async () => {
+    setTransactionState({ waiting: true, msg: "Waiting for Transaction" });
+    try {
+      // Ensure that the user is connected to the expected chain
+      const provider = await getEthersProvider(wagmiConfig);
+
+      const signer = await getEthersSigner(wagmiConfig);
+
+      const contract = new ethers.Contract(
+        "0x4EF8A2cCc0336298cd4e8f6eF3C3FBd4E5C26326",
+        // contract_abi.abi,
+        registrarController_abi.abi,
+        signer
+      );
+
+      const name = showDomainName;
+
+      const registrationDuration = 31556952 * registrationPeriod; // 1 year in seconds
+
+      const estimatedPriceArray = await contract.rentPrice(
+        tldIdentifier,
+        name, // Replace with a label for your domain
+        registrationDuration
+      );
+      // console.log(estimatedPriceArray);
+      // Access individual BigNumber objects in the array
+      const base = parseInt(estimatedPriceArray[0]);
+      const premium = parseInt(estimatedPriceArray[1]);
+      let finalPrice = base + premium;
+      // console.log(finalPrice);
+
+      finalPrice = finalPrice * 1.1;
+
+      const extDt = ["0x"];
+      // console.log(finalPrice);
+      // console.log("Base Price (Wei):", base.toString());
+      // console.log("Premium Price (Wei):", premium.toString());
+      console.log(
+        tldIdentifier.toString(),
+        [name],
+        address,
+        registrationDuration,
+        "0xD49C49CCc236Cf9c4159E2211a7C45e89cA859d7",
+        parseInt(finalPrice).toString(),
+        extDt
+      );
+      // console.log(contract);
+
+      const tx = await contract.bulkRegister(
+        tldIdentifier,
+        [name],
+        address,
+        registrationDuration,
+        "0xD49C49CCc236Cf9c4159E2211a7C45e89cA859d7",
+        true,
+        extDt,
+        {
+          value: parseInt(finalPrice).toString(),
+          // gasLimit: 2000000, // Manually set a sufficient gas limit
+        }
+      );
+      setTransactionState({ waiting: true, msg: "Transacting..." });
+      const txhash = await tx.wait();
+      console.log(txhash);
+
+      console.log("Name registered successfully!");
+      setNameRegistered(true);
+      setTransactionState({
+        waiting: true,
+        msg: "Name registered successfully!",
+      });
+      navigate(`/user/${address}`);
+
+      // setTimeout(() => {
+
+      //   navigate("/profile", { state: { reload: true } });
+      // }, 2000);
+    } catch (error) {
+      // console.log(error);
+      // console.log(Object.keys(error));
+      // console.log(error.code);
+      // console.log(error.reason);
+
+      setTransactionState({ waiting: false, msg: "" });
+      // const parsedEthersError = getParsedEthersError(error);
+      // // const err = parsedEthersError.context?.split("(")[0];
+      console.log(error.reason ? error.reason : error);
+      // if (error.message.includes("Address is already registered with a name"))
+      //   setErrorMessage(
+      //     "You already have claimed one handle, get more on Mainnet."
+      //   );
+
+      // else if (error.message.includes("Insufficient funds sent"))
+      //   setErrorMessage("Insufficient funds to cover the transaction.");
+
+      // setErrorMessage(error.message);
+    }
+  };
 
   return (
     <div className="container">
@@ -348,9 +439,20 @@ function RegisterDomain() {
           </div>
         </div>
         <div className="domain-register">
-          <button type="submit" className="submit-button">
-            Domain Register
-          </button>
+          {transactionState.waiting ? (
+            <div className="submit-button">
+              {transactionState.msg}
+              {!nameRegistered && <div className="sp sp-wave"></div>}
+            </div>
+          ) : (
+            <button
+              type="button"
+              className="submit-button"
+              onClick={registerName}
+            >
+              Domain Register
+            </button>
+          )}
         </div>
       </form>
     </div>

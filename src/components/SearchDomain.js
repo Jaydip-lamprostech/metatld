@@ -34,7 +34,8 @@ function SearchDomain() {
         const formattedResults = data.map((domain) => ({
           ...domain,
           priceInEth: domain.available
-            ? ethers.utils.formatEther(domain.price) + " ETH"
+            ? parseFloat(ethers.utils.formatEther(domain.price)).toFixed(4) +
+              " ETH"
             : "Not Available",
         }));
         console.log("formattedResults", formattedResults);
@@ -98,9 +99,15 @@ function SearchDomain() {
             </div>
 
             <div className="right">
-              <span className="price">{domain.priceInEth}</span>
+              <span
+                className={`price ${
+                  domain.priceInEth === "Not Available" ? "disabled" : null
+                }`}
+              >
+                {domain.priceInEth}
+              </span>
               <Link
-                className="buy-button"
+                className={`buy-button ${!domain.available && "disabled"}`}
                 disabled={!domain.available}
                 to={`/register/domain?tldName=${domain.tld}&query=${searchTerm}&tldIdentifier=${domain.identifier}&domainPrice=${domain.price}`}
               >

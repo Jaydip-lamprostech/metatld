@@ -31,7 +31,9 @@ function Home() {
         </div>
       </div>
 
-      <h1 className="home-h1">Lorem ipsum dolor sit amet</h1>
+      <h1 className="home-h1">
+        Experience the Freedom of Permissionless TLDs and Domains
+      </h1>
       <p className="home-tagline">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porta,
         ante eu laoreet efficitur, ipsum velit sodales sem

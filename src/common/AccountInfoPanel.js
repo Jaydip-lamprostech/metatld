@@ -1,8 +1,9 @@
 import { useCallback } from "react";
-import { Avatar, Name } from "@coinbase/onchainkit/identity";
+import { Address, Avatar, Name } from "@coinbase/onchainkit/identity";
 import { ExitIcon } from "@radix-ui/react-icons";
 import { useAccount, useDisconnect } from "wagmi";
 import "./styles.css";
+import AvatarGenerator from "./../components/AvatarGenerator";
 
 export function AccountInfoPanel() {
   const { address } = useAccount();
@@ -16,7 +17,8 @@ export function AccountInfoPanel() {
   return (
     <>
       <div className="account-info-panel">
-        <Avatar address={address} className="avatar" />
+        {/* <Avatar address={address} className="avatar" /> */}
+        <AvatarGenerator name={address} width={30} height={30} />
         <div className="name-container">
           <div className="name">
             <Name address={address} />
