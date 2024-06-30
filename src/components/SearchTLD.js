@@ -89,7 +89,7 @@ function SearchTLD() {
               to={`/register/tld?tldName=${searchedTld}`}
               className={!isAvailable ? "disabled" : null}
             >
-              Stake and Register
+              Stake and Deploy
             </Link>
           </div>
         </div>

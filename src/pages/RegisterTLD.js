@@ -122,8 +122,7 @@ function RegisterTLD() {
     console.log(publicRegistrationStartTime);
     const minRegistrationDurationInSeconds =
       parseInt(minRegistrationDuration) * 365 * 24 * 60 * 60;
-    const minRenewDurationInSeconds =
-      parseInt(minRenewDuration) * 365 * 24 * 60 * 60;
+    const minRenewDurationInSeconds = parseInt(minRenewDuration) * 24 * 60 * 60;
 
     const threeLetterPrice = letterConfigurations.find(
       (config) => config.letter === "3 letters"
@@ -269,11 +268,13 @@ function RegisterTLD() {
         </div>
         <div className="input-group-flex">
           <div className="input-group">
-            <label className="regtld-label">Min Registration Duration</label>
+            <label className="regtld-label">
+              Min Registration Duration (in years)
+            </label>
             <div className="regtld-input-parent">
               <input
                 type="text"
-                placeholder="1 year"
+                placeholder="e.g., for 1 year enter 1"
                 className="regtld-input"
                 value={minRegistrationDuration}
                 onChange={(e) => setMinRegistrationDuration(e.target.value)}
@@ -281,11 +282,11 @@ function RegisterTLD() {
             </div>
           </div>
           <div className="input-group">
-            <label className="regtld-label">Min Renew Duration</label>
+            <label className="regtld-label">Min Renew Duration (in days)</label>
             <div className="regtld-input-parent">
               <input
                 type="text"
-                placeholder="e.g., 10 days"
+                placeholder="e.g., for 10 days enter 10"
                 className="regtld-input"
                 value={minRenewDuration}
                 onChange={(e) => setMinRenewDuration(e.target.value)}
@@ -331,7 +332,7 @@ function RegisterTLD() {
                   <input
                     type="text"
                     name="price"
-                    placeholder="e.g., 10 USD"
+                    placeholder="e.g., for 0.01 ETH enter 0.01"
                     value={config.price}
                     onChange={(event) => handleInputChange(index, event)}
                     className="regtld-input"
