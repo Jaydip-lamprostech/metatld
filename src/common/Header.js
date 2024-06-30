@@ -20,6 +20,7 @@ import { WalletOptions } from "../components/popup/wallet-options";
 import Popup from "../components/popup/Popup";
 import { AccountInfoPanel } from "./AccountInfoPanel";
 import { AccountDropdown } from "./AccountDropdown";
+import { Link } from "react-router-dom";
 
 function Header() {
   const chains = getChains(wagmiConfig);
@@ -47,12 +48,15 @@ function Header() {
       </div>
 
       {address ? (
-        <div style={{ width: "150px" }}>
-          <div className="account-info-panel-md-hidden">
-            <AccountInfoPanel />
-          </div>
-          <div className="account-dropdown-md-block">
-            <AccountDropdown />
+        <div className="user-profile-navbar">
+          <Link to={`/user/${address}`}>Profile</Link>
+          <div style={{ width: "150px" }}>
+            <div className="account-info-panel-md-hidden">
+              <AccountInfoPanel />
+            </div>
+            <div className="account-dropdown-md-block">
+              <AccountDropdown />
+            </div>
           </div>
         </div>
       ) : (

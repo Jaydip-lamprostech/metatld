@@ -33,11 +33,6 @@ function RegisterTLD() {
   const [minRenewDuration, setMinRenewDuration] = useState("");
   const [mintCap, setMintCap] = useState("");
 
-  const minRegistrationDurationInSeconds =
-    parseInt(minRegistrationDuration) * 365 * 24 * 60 * 60;
-  const minRenewDurationInSeconds =
-    parseInt(minRenewDuration) * 365 * 24 * 60 * 60;
-
   const handleInputChange = (index, event) => {
     const values = [...letterConfigurations];
     values[index][event.target.name] = event.target.value;
@@ -125,25 +120,45 @@ function RegisterTLD() {
     const publicRegistrationStartTime = latestBlock.timestamp + 120;
 
     console.log(publicRegistrationStartTime);
+    const minRegistrationDurationInSeconds =
+      parseInt(minRegistrationDuration) * 365 * 24 * 60 * 60;
+    const minRenewDurationInSeconds =
+      parseInt(minRenewDuration) * 365 * 24 * 60 * 60;
+
+    const threeLetterPrice = letterConfigurations.find(
+      (config) => config.letter === "3 letters"
+    )?.price;
+    const fourLetterPrice = letterConfigurations.find(
+      (config) => config.letter === "4 letters"
+    )?.price;
+    const fiveLetterPrice = letterConfigurations.find(
+      (config) => config.letter === "More than 4 letters"
+    )?.price;
+
+    const finalPrices = [
+      ethers.utils.parseEther(threeLetterPrice),
+      ethers.utils.parseEther(fourLetterPrice),
+      ethers.utils.parseEther(fiveLetterPrice),
+    ];
 
     const initData = {
       baseUri: "https://gateway.lighthouse.storage/ipfs/", // Add the base URI if applicable
-      // config: {
-      //   minDomainLength: parseInt(minDomainLength),
-      //   maxDomainLength: parseInt(maxDomainLength),
-      //   minRegistrationDuration: minRegistrationDurationInSeconds,
-      //   minRenewDuration: minRenewDurationInSeconds,
-      //   mintCap: parseInt(mintCap),
-      // },
       config: {
-        minDomainLength: 3,
-        maxDomainLength: 10,
-        minRegistrationDuration: 31556952,
-        minRenewDuration: 31556952,
-        mintCap: 0,
+        minDomainLength: parseInt(minDomainLength),
+        maxDomainLength: parseInt(maxDomainLength),
+        minRegistrationDuration: minRegistrationDurationInSeconds,
+        minRenewDuration: minRenewDurationInSeconds,
+        mintCap: parseInt(mintCap),
       },
+      // config: {
+      //   minDomainLength: 3,
+      //   maxDomainLength: 10,
+      //   minRegistrationDuration: 31556952,
+      //   minRenewDuration: 31556952,
+      //   mintCap: 0,
+      // },
       letters: [3, 4, 5],
-      prices: [20597680029427, 5070198161089, 158443692534],
+      prices: finalPrices,
       enableGiftCard: true,
       giftCardTokenIds: [],
       giftCardPrices: [],

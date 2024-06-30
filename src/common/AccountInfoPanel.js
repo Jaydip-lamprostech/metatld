@@ -23,9 +23,6 @@ export function AccountInfoPanel() {
           <div className="name">
             <Name address={address} />
           </div>
-          <span className="address">
-            <Name address={address} showAddress />
-          </span>
         </div>
       </div>
 

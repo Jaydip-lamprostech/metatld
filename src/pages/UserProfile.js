@@ -103,112 +103,114 @@ const UserProfile = () => {
 
   return (
     <div className="profile-container">
-      {loading ? (
-        <SkeletonTheme baseColor="#202020" highlightColor="#444">
-          <div className="skeletonParentDivProfile">
-            {[...Array(5)].map((_, index) => (
-              <Skeleton
-                key={index}
-                width={"100%"}
-                height={50}
-                style={{ margin: "10px 0" }}
-              />
-            ))}
-          </div>
-        </SkeletonTheme>
-      ) : tldsFound && tlds.length > 0 ? (
-        tlds.map((tld, index) => (
-          <>
-            <h1 className="domain_profile_page_title">Your TLDs</h1>
-            <AccordionPanel key={index} title={tld.tld} isPrimary={false}>
-              <TLDInformation tld={tld} />
-            </AccordionPanel>
-          </>
-        ))
-      ) : !tldsFound && tlds.length === 0 ? (
-        <>
-          <h1 className="domain_profile_page_title">Your TLDs</h1>
-          <AccordionPanel title={"Domain not found for this address"}>
-            <div className="profile-section">
-              <div className="dnf-address-div">
-                <p className="dnf-info">
-                  Experience seamless, user-centric blockchain engagement on the
-                  BASE Sepolia network with MetaTLDs.
-                </p>
-                <a className="claim-domain-btn" href="/search?type=tld">
-                  Register TLD
-                </a>
-              </div>
-            </div>
-          </AccordionPanel>
-        </>
-      ) : null}
-
-      {loading ? (
-        <SkeletonTheme baseColor="#202020" highlightColor="#444">
-          <div className="skeletonParentDivProfile">
-            {[...Array(5)].map((_, index) => (
-              <Skeleton
-                key={index}
-                width={"100%"}
-                height={50}
-                style={{ margin: "10px 0" }}
-              />
-            ))}
-          </div>
-        </SkeletonTheme>
-      ) : domainFound && domains.length > 0 ? (
-        domains.map((domain, index) => (
-          <>
-            <h1 className="domain_profile_page_title">Your Domain Names</h1>
-            <AccordionPanel key={index} title={domain.name} isPrimary={false}>
-              <ProfileDomainNavbar
-                instanceId={`instance${index}`}
-                activeItems={activeItems[`instance${index}`]}
-                onClick={(itemName) =>
-                  handleNavbarClick(`instance${index}`, itemName)
-                }
-              />
-
-              {activeItems[`instance${index}`] === "Details" ||
-              !activeItems[`instance${index}`] ? (
-                <ProfileDetails
-                  // modenft={modenft}
-                  domainDetails={domain}
-                  primaryDomain={false}
-                  expiryDateInEpoch={domain.expires}
-                  isNotPrimaryDomain={domain.name !== primaryDomain}
+      <>
+        <h1 className="domain_profile_page_title">Your TLDs</h1>
+        {loading ? (
+          <SkeletonTheme baseColor="#202020" highlightColor="#444">
+            <div className="skeletonParentDivProfile">
+              {[...Array(5)].map((_, index) => (
+                <Skeleton
+                  key={index}
+                  width={"100%"}
+                  height={50}
+                  style={{ margin: "10px 0" }}
                 />
-              ) : activeItems[`instance${index}`] === "Ownership" ? (
-                <DomainOwnership address={address} domainDetails={domain} />
-              ) : activeItems[`instance${index}`] === "Subnames" ? (
-                <Subnames />
-              ) : activeItems[`instance${index}`] === "Permissions" ? (
-                <PermissionsOfDomain />
-              ) : activeItems[`instance${index}`] === "MoreDetails" ? (
-                <MoreAboutDomains />
-              ) : null}
+              ))}
+            </div>
+          </SkeletonTheme>
+        ) : tldsFound && tlds.length > 0 ? (
+          tlds.map((tld, index) => (
+            <>
+              <AccordionPanel key={index} title={tld.tld} isPrimary={false}>
+                <TLDInformation tld={tld} />
+              </AccordionPanel>
+            </>
+          ))
+        ) : !tldsFound && tlds.length === 0 ? (
+          <>
+            <AccordionPanel title={"Domain not found for this address"}>
+              <div className="profile-section">
+                <div className="dnf-address-div">
+                  <p className="dnf-info">
+                    Experience seamless, user-centric blockchain engagement on
+                    the BASE Sepolia network with MetaTLDs.
+                  </p>
+                  <a className="claim-domain-btn" href="/search?type=tld">
+                    Register TLD
+                  </a>
+                </div>
+              </div>
             </AccordionPanel>
           </>
-        ))
-      ) : !domainFound && domains.length === 0 ? (
-        <>
-          <h1 className="domain_profile_page_title">Your Domain Names</h1>
-          <AccordionPanel title={"Domain not found for this address"}>
-            <div className="profile-section">
-              <div className="dnf-address-div">
-                <p className="dnf-info">
-                  Experience seamless, user-centric blockchain engagement on the
-                  BASE Sepolia network with MetaTLDs.
-                </p>
-                <a className="claim-domain-btn" href="/search?type=domain">
-                  Claim Domain
-                </a>
-              </div>
+        ) : null}
+      </>
+
+      <>
+        <h1 className="domain_profile_page_title">Your Domain Names</h1>
+        {loading ? (
+          <SkeletonTheme baseColor="#202020" highlightColor="#444">
+            <div className="skeletonParentDivProfile">
+              {[...Array(5)].map((_, index) => (
+                <Skeleton
+                  key={index}
+                  width={"100%"}
+                  height={50}
+                  style={{ margin: "10px 0" }}
+                />
+              ))}
             </div>
-          </AccordionPanel>
-        </>
-      ) : null}
+          </SkeletonTheme>
+        ) : domainFound && domains.length > 0 ? (
+          domains.map((domain, index) => (
+            <>
+              <AccordionPanel key={index} title={domain.name} isPrimary={false}>
+                <ProfileDomainNavbar
+                  instanceId={`instance${index}`}
+                  activeItems={activeItems[`instance${index}`]}
+                  onClick={(itemName) =>
+                    handleNavbarClick(`instance${index}`, itemName)
+                  }
+                />
+
+                {activeItems[`instance${index}`] === "Details" ||
+                !activeItems[`instance${index}`] ? (
+                  <ProfileDetails
+                    // modenft={modenft}
+                    domainDetails={domain}
+                    primaryDomain={false}
+                    expiryDateInEpoch={domain.expires}
+                    isNotPrimaryDomain={domain.name !== primaryDomain}
+                  />
+                ) : activeItems[`instance${index}`] === "Ownership" ? (
+                  <DomainOwnership address={address} domainDetails={domain} />
+                ) : activeItems[`instance${index}`] === "Subnames" ? (
+                  <Subnames />
+                ) : activeItems[`instance${index}`] === "Permissions" ? (
+                  <PermissionsOfDomain />
+                ) : activeItems[`instance${index}`] === "MoreDetails" ? (
+                  <MoreAboutDomains />
+                ) : null}
+              </AccordionPanel>
+            </>
+          ))
+        ) : !domainFound && domains.length === 0 ? (
+          <>
+            <AccordionPanel title={"Domain not found for this address"}>
+              <div className="profile-section">
+                <div className="dnf-address-div">
+                  <p className="dnf-info">
+                    Experience seamless, user-centric blockchain engagement on
+                    the BASE Sepolia network with MetaTLDs.
+                  </p>
+                  <a className="claim-domain-btn" href="/search?type=domain">
+                    Claim Domain
+                  </a>
+                </div>
+              </div>
+            </AccordionPanel>
+          </>
+        ) : null}
+      </>
     </div>
   );
 };

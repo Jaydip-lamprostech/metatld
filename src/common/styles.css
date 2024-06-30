@@ -97,8 +97,6 @@
 /* Specific styles for AccountDropdown */
 .trigger-container {
   display: flex;
-  height: 2rem;
-  width: 2rem;
   align-items: center;
   justify-content: center;
 }
@@ -133,4 +131,14 @@
 
 .wallet-button-after-connected .text-foreground {
   color: #72eeff !important;
+}
+.user-profile-navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  color: #72eeff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-family: "Space Grotesk", sans-serif;
 }
