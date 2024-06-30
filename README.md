@@ -1,70 +1,198 @@
-# Getting Started with Create React App
+# MetaTLDs - Decentralized TLD Registration and Management Platform
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+MetaTLDs is a decentralized platform that empowers users to create and manage their own Top-Level Domains (TLDs) using blockchain technology. By staking ETH, users can seamlessly register domains under these TLDs without the need for central authority approval. This platform provides a transparent, flexible, and cost-effective solution for TLD management.
 
-## Available Scripts
+## Table of Contents
 
-In the project directory, you can run:
+1. [Introduction](#introduction)
+2. [Issues with Traditional TLD Registration](#issues-with-traditional-tld-registration)
+3. [Permissionless TLDs](#permissionless-tlds)
+4. [One-Click Staking and Deployment](#one-click-staking-and-deployment)
+5. [Smart Contract Overview](#smart-contract-overview)
+6. [Installation](#installation)
+7. [Usage](#usage)
+8. [Functions](#functions)
+9. [Events](#events)
 
-### `npm start`
+## Introduction
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Project Overview:
+MetaTLDs is a decentralized platform for TLD (Top-Level Domain) registration and domain management using blockchain technology. It empowers users to create and manage their own TLDs by staking ETH, with seamless domain registration under these TLDs.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Issues with Traditional TLD Registration
 
-### `npm test`
+### Centralized Control:
+- Limited number of organizations (e.g., ICANN) control TLD registration.
+- High barriers to entry for new TLDs.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### High Costs:
+- Expensive application and maintenance fees for new TLDs.
 
-### `npm run build`
+### Lack of Flexibility:
+- Inflexible policies and restrictions on TLD management.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Transparency Issues:
+- Limited transparency in the TLD allocation process.
+- Need for developers to deploy the contract for registering new TLDs.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Permissionless TLDs
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Open Access:
+- Any DAO, protocol, or organization can create their own TLD and accommodate their users or community members, making them feel part of the DAO or organization.
+- No need for approval from central authorities.
 
-### `npm run eject`
+### Empowerment:
+- Provides equal opportunity for everyone to establish their unique TLD.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Diverse Use Cases:
+- Suitable for personal, business, community, and protocol-specific TLDs.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Innovation and Flexibility:
+- Encourages creativity in domain naming and management.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## One-Click Staking and Deployment
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Simple Process:
+- Users can stake ETH and deploy their TLD contract with just one click.
+- No need for developers to deploy the TLD registration smart contract; any normal user can do it with one click.
 
-## Learn More
+### User-Friendly Interface:
+- Intuitive platform design for easy TLD creation and management.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Smart Contract Automation:
+- Automated deployment of TLD smart contracts ensures security and efficiency.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Instant Deployment:
+- Immediate availability of the TLD after staking and deployment.
 
-### Code Splitting
+## Smart Contract Overview
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+The `TldFactory` smart contract is the core of the MetaTLDs platform. It handles the creation, configuration, and management of TLDs, including support for price models, pre-registration, gift cards, referrals, and staking.
 
-### Analyzing the Bundle Size
+## Installation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+To use this contract, you need to have the Solidity compiler installed. You can install it via npm:
 
-### Making a Progressive Web App
+## Contracts
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+You can find the smart contracts for the metaTLDs project [here](https://github.com/bhadresh-lamprostech/metaTlds).
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Getting Started
 
-### Deployment
+### Installation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+To install Hardhat and set up your environment:
 
-### `npm run build` fails to minify
+```bash
+npm install --save-dev hardhat
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```
+## Compiling Contracts
+To compile your metaTLDs contracts:
+
+```bash
+npx hardhat compile
+```
+
+# Running Tests
+To run tests (assuming tests are set up in your project):
+
+```bash
+npx hardhat test
+```
+
+## Usage
+
+1. Deploy the contract using a Solidity compiler or an IDE like Remix.
+2. Initialize the contract by calling the `initialize` function with the required parameters.
+3. Use the `createDomainService` function to create new TLDs.
+
+![metatld-final](https://github.com/Jaydip-lamprostech/metatld/assets/106816090/48b679c3-c656-4258-ba88-8fec3686d09a)
+
+
+## Functions
+
+### Initialization
+
+#### `initialize`
+Initializes the TldFactory contract with the necessary parameters.
+
+```solidity
+function initialize(
+    IBaseCreator _baseCreator,
+    IRegistrarController _controller,
+    address _platformConfig,
+    address _priceOracle,
+    GiftCardVoucher _giftCardVoucher,
+    GiftCardLedger _giftCardLedger,
+    ReferralHub _referralHub,
+    IPreRegistrationCreator _preRegiCreator,
+    PrepaidPlatformFee _prepaidPlatformFee
+) public initializer onlyPlatformAdmin
+
+```
+# Domain Creation
+
+## createDomainService
+Creates a new TLD.
+
+```solidity
+function createDomainService(
+    string calldata tld,
+    address tldOwner,
+    TldInitData calldata initData
+) external override returns (uint256 identifier)
+```
+
+# Staking
+## stake
+Allows users to stake ETH for a TLD.
+
+```solidity
+function stake(uint256 identifier, string calldata tld, bytes32[] memory proof) external payable
+```
+## unStake
+Allows users to withdraw their staked ETH.
+
+```solidity
+function unStake() external
+```
+## getStakeDetails
+Returns the staking details for the caller.
+```solidity
+function getStakeDetails() external view returns (address owner, uint256 identifier, uint256 stakedAmount)
+```
+
+# Price Oracle
+## setDefaultPriceOracle
+Sets the default price oracle.
+```solidity
+function setDefaultPriceOracle(address _defaultPriceOracle) external onlyPlatformAdmin
+```
+
+# Merkle Root
+## updateMerkleRoot
+Updates the Merkle root for the TLDs.
+```solidity
+function updateMerkleRoot(string memory _merkleRoot) external onlyPlatformAdmin
+```
+
+# Availability Check
+## checkAvailability
+Checks if a TLD is available for registration.
+
+```solidity
+function checkAvailability(string calldata tld, bytes32[] memory proof) public view returns (bool)
+```
+# Events
+
+- Staked: Emitted when a user stakes ETH.
+- UnStake: Emitted when a user withdraws their staked ETH.
+- NewDomainService: Emitted when a new TLD is created.
+- SetDefaultPriceOracle: Emitted when the default price oracle is set.
+
+# Modifiers
+
+- hasStaked: Ensures the user has staked the required amount of ETH.
+
